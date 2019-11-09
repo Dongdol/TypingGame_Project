@@ -1,7 +1,7 @@
 #ifndef _MENU_H_
 #define _MENU_H_
 
-#include "iswhat.h"
+#include "TajaGame.h"
 #include <iostream>
 #include <stdlib.h>
 #include <unistd.h>
