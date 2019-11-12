@@ -18,7 +18,7 @@ void Remove_Enter(char put_String[], int len) {
 void basicgame() {
     system("clear");
 
-    char pathName[] = "ex";
+    char pathName[] = "명언";
     char put_String[SIZE_READ_TEXT] = {
         '\0',
     };
