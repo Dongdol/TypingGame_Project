@@ -25,7 +25,7 @@ Node* createNode() {
     return node;
 }
 
-void game() {
+void rainGame() {
 
     pthread_t t1 = 0;
 

@@ -12,7 +12,7 @@ class Node {
 Node *createNode();
 const char *randomWord();
 void *thread_word(void *none);
-void game();
+void rainGame();
 void draw(int row, int col, const char *str);
 void addWord(const char *word, int col);
 
