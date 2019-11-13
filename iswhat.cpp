@@ -1,5 +1,5 @@
 #include "iswhat.h"
-
+ 
 //타이핑된 문자열중에 본문과 맞지않는 글자수 반환
 //본문과 입력된 문자열을 비교해서 오타수 반환하는 함수
 int Iswhat::Return_ErrTypeNum(char Buf[], char put_String[], int str_Size) {
@@ -9,7 +9,7 @@ int Iswhat::Return_ErrTypeNum(char Buf[], char put_String[], int str_Size) {
             err++;
     }
 
-    return --err;
+    return err;
 }
 // fgets()로 받을 때 입력되는 \n 제거하는 함수
 void Iswhat::Remove_Enter(char put_String[], int len) {
@@ -20,17 +20,20 @@ int Iswhat::basicgame() {
     system("clear");
 
     char pathName[] = "명언";
-    char put_String[SIZE_READ_TEXT] = {
-        '\0',
-    };
-    char Buf[SIZE_READ_TEXT] = {
-        '\0',
-    };
-    char err_type[SIZE_READ_TEXT] = {
-        '\0',
-    };
+    char put_String[SIZE_READ_TEXT] = {'\0',  };
+    char Buf[SIZE_READ_TEXT] = { '\0',};
+    char err_type[SIZE_READ_TEXT] = { '\0', };
     int total_typenum = 0; //타이핑되는 총 글자수 입력 (공백 포함)
     int err_typenum = 0;
+    float accuarcy = 0.0;
+    list<string> English={"명언","명언2","명언3"};
+    list<string> Hangule;
+
+    cout<<English.back()<<endl; 
+
+
+
+
 
     int fd = open(pathName, O_RDONLY);
     if (fd == -1) {
@@ -65,11 +68,19 @@ int Iswhat::basicgame() {
     }
 
     int type_during_Time = (int)time(NULL) - type_start_Time;
+    accuarcy = (float)(total_typenum - err_typenum)/total_typenum *100;
     total_typenum -= err_typenum; // 오타수만큼 제거
 
+
+    cout<<total_typenum<<endl;
+    cout<<fixed;
+    cout.precision(1);
     cout << "끝" << endl;
     cout << "타자 치는데 걸린 Time: " << type_during_Time << "초" << endl;
-    cout << "타자속도: " << (total_typenum / type_during_Time) * 60 << endl;
+    cout << "평균타수: " << ((float)total_typenum / type_during_Time) * 60 <<endl;
+    cout << "정확도: " << accuarcy <<"%"<<endl;
+    
+    sleep(10);
 
     return 0;
 }
