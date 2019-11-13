@@ -2,6 +2,7 @@
 
 
 !!master 브런치에 바로 PR하지말고 test or rain_test 브런치에 PR하세요!!
+
 !!master 브런치는 test다 끝난 완성본만
 __타자연습 게임__
 
