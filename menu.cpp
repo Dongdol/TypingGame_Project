@@ -32,7 +32,7 @@ void Menu::mainmenu()
 
         switch (menu.choice) {
         case 1:
-            game.basicGame(); //기본 타자 연습 모드
+            game.basicgame(); //기본 타자 연습 모드
             break;
         case 2:
             rainGame(); //산성비 모드

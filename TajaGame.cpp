@@ -1,23 +1,30 @@
 #include "TajaGame.h"
 
-using namespace std;
+
+
 
 void Game::Print_Result()
 {
-
+  
     cout<<total_typenum<<endl;
     cout<<fixed;
     cout.precision(1);
     cout << "타자 치는데 걸린 Time: " << type_during_Time << "초" << endl;
     cout << "평균타수: " << ((float)total_typenum / type_during_Time) * 60 <<endl;
     cout << "정확도: " << accuarcy <<"%"<<endl;
-
-    sleep(10);
+    
+    err_typenum =0;
+    total_typenum =0;
+    accuarcy =0.0;
+    while(Text_Mode.size() !=0)
+         Text_Mode.pop_back();
+         cout<<"dongdol"<<endl;
+    sleep(3);
 
 }
 
 
-void Game::Remove_Enter(char put_String[], int len)
+void Game::Remove_Enter(char put_String[], int len) 
 {
     put_String[len - 1] = '\0';
 }
@@ -47,27 +54,35 @@ char* Game::Print_TextList(int select)
     {
         cout<<"원하는 글을 입력하세요."<<endl;
         scanf("%s", SelectedFile);
-        printf("%s", SelectedFile);
-        return SelectedFile;
+        for(iter = Text_Mode.begin(); iter != Text_Mode.end(); ++iter)
+        {
+            if(iter->compare(SelectedFile) ==0)
+                return SelectedFile;
+            else 
+                break;
+        }
     }
-
+    
 }
 
-int Game::basicGame()
+int Game::basicgame()
 {
     /*타자연습 언어 선택*/
-    int select =0;
+    
     while(1){
+        system("clear");
         cout<<"어떤 언어로 타자연습을 진행하시겠습니까? 1. 영어 2. 한글"<<endl;
         cin>>select;
         if(select ==SELECT_ENGLISH)
             {
                 Text_Mode = English;
+                cout<<"영어를 선택하셨습니다."<<endl;
                 break;
             }
         else if(select==SELECT_HANGUL)
         {
             Text_Mode = Hangul;
+            cout<<"한글을 선택하셨습니다."<<endl;
             break;
         }
         else
@@ -75,8 +90,8 @@ int Game::basicGame()
             cout<<"1또는 2를 입력하세요"<<endl;
             continue;
         }
-    }
-
+    }   
+     
     strcpy(pathName,Print_TextList(select));
     while(getchar() != '\n');
     int fd = open(pathName, O_RDONLY);
@@ -142,7 +157,7 @@ int Game::basicGame()
     }
 
 
-
+    
     type_during_Time = (int)time(NULL) - type_start_Time;
     accuarcy = (float)(total_typenum - err_typenum)/total_typenum *100;
     total_typenum -= err_typenum; // 오타수만큼 제거
