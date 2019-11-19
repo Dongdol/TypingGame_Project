@@ -15,14 +15,14 @@ void Rain::Game_Start() {
 
     // score print
     move(1, 0);
-    addstr("score :   ");
-    sprintf(score_Bar, "%03d", score);
+    addstr("score: ");
+    sprintf(score_Bar, "%d", score);
     addstr(score_Bar);
 
     // hp print
     move(0, 0);
-    addstr("life  : ");
-    sprintf(hp_Bar, "%03d", hp);
+    addstr("life: ");
+    sprintf(hp_Bar, "%d", hp);
     addstr(hp_Bar);
     refresh();
 
@@ -64,27 +64,27 @@ void Rain::Game_Start() {
                     enter[i] = '\0';
                 }
 
-                move(20, 40);
+                move(20, 36);
                 addstr("                      "); //enter하는 곳 비우기
                 Draw(20, 20, enter_Bar);
-                move(20, 40);
+                move(20, 36);
 
                 break;
             } else if(input == 127){ //백스페이스 눌렀을 때
                 enter[enter_num] = '\0'; //개행 문자 널로 바꾸기
 
                 enter[--enter_num] = '\0';
-                move(20, 40);
+                move(20, 36);
                 addstr("                      "); // enter하는 곳 비우기
-                move(20, 40);
+                move(20, 36);
                 addstr(enter);
             } else { //문자 입력할 때
                 enter[enter_num++] = input;
-                move(20, 40);
+                move(20, 36);
                 addstr(enter);
             }
 
-            refresh();
+           refresh();
         }
     }
 
@@ -92,34 +92,46 @@ void Rain::Game_Start() {
     endwin();
     clear();
 }
+//입력한 단어가 화면에 있는 단어와 일치하면 제거하고 스코어 +10
 void Rain::FindWords(char *str) {
     for (Iter = WordList.begin(); Iter != WordList.end(); ++Iter){
-        if ((**Iter).str == str) {
-            strcpy((**Iter).str, "");
+        if (!strcmp((**Iter).str,str))
+        {   
+             WordList.erase(Iter);
+             Iter = WordList.begin();
+             score +=10;
+             move(1, 0);
+             addstr("score: ");
+             sprintf(score_Bar, "%d", score);
+             addstr(score_Bar);
+             refresh();
+             return;
         }
     }
 }
 
 void *Rain::Game_Board(void *) {
     while (hp > 0) {
-        CreateList();
 
+        
+        CreateList();
+        Blank_OutputWord();
         //문자열 출력
         for (Iter = WordList.begin(); Iter != WordList.end(); ++Iter) {
             // row가 19이하일 때만 출력한다
-            if ((**Iter).row <= 19) {
+            if ((**Iter).row <20) {
                 Draw((**Iter).row, (**Iter).col, (**Iter).str);
             }
 
-            if ((**Iter).row > 19) {
+            if ((**Iter).row > 20) {
                 pthread_mutex_lock(&lock);
                 hp--;
                 WordList.pop_front();
                 pthread_mutex_unlock(&lock);
 
                 move(0, 0);
-                addstr("life  : ");
-                sprintf(hp_Bar, "%03d", hp);
+                addstr("life: ");
+                sprintf(hp_Bar, "%d", hp);
                 addstr(hp_Bar);
                 refresh();
                 Iter = WordList.begin();
@@ -128,8 +140,8 @@ void *Rain::Game_Board(void *) {
             }
         }
 
-       // Blank_OutputWord();
-        move(20, 40);
+       
+        move(20, 36);
     }
 }
 
@@ -139,26 +151,7 @@ void Rain::Draw(int row, int col, char *str) {
     refresh();
 }
 
-/* void Rain::Print_Words() 			이거 지워도 될듯..?
- {
-        srand(time(NULL));
 
-        char** yohan = Get_Words();
-
-        int random =0;
-        for(int i= 0; i<10; i++)
-        {
-                       random = rand()%12;
-
-                       printw("%s",yohan[random]);
-        }
-
-         move(5,30);
-         printw("%s",yohan[0]);
-         refresh();
-         usleep(500000);
-
- }*/
 
 char **Rain::Get_Words() { return STAGE1; }
 
@@ -198,7 +191,7 @@ void Rain::CreateList() {
 
     word = CreateWord(Return_Str());
     WordList.push_back(word);
-    usleep(1000000);
+    usleep(2000000);
     Down_Words();
 }
 
