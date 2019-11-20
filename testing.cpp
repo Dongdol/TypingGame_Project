@@ -96,7 +96,7 @@ void Rain::Game_Start() {
 void Rain::FindWords(char *str) {
     for (Iter = WordList.begin(); Iter != WordList.end(); ++Iter){
         if (!strcmp((**Iter).str,str))
-        {   
+        {
              WordList.erase(Iter);
              Iter = WordList.begin();
              score +=10;
@@ -113,7 +113,7 @@ void Rain::FindWords(char *str) {
 void *Rain::Game_Board(void *) {
     while (hp > 0) {
 
-        
+
         CreateList();
         Blank_OutputWord();
         //문자열 출력
@@ -140,7 +140,7 @@ void *Rain::Game_Board(void *) {
             }
         }
 
-       
+
         move(20, 36);
     }
 }
