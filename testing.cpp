@@ -87,8 +87,10 @@ void Rain::Game_Start() {
            refresh();
         }
     }
-
+   
     pthread_join(pthread, NULL);
+    Blank_OutputWord();
+    refresh();
     endwin();
     clear();
 }
@@ -96,7 +98,7 @@ void Rain::Game_Start() {
 void Rain::FindWords(char *str) {
     for (Iter = WordList.begin(); Iter != WordList.end(); ++Iter){
         if (!strcmp((**Iter).str,str))
-        {
+        {   
              WordList.erase(Iter);
              Iter = WordList.begin();
              score +=10;
@@ -113,19 +115,29 @@ void Rain::FindWords(char *str) {
 void *Rain::Game_Board(void *) {
     while (hp > 0) {
 
-
+        
         CreateList();
         Blank_OutputWord();
         //문자열 출력
         for (Iter = WordList.begin(); Iter != WordList.end(); ++Iter) {
             // row가 19이하일 때만 출력한다
-            if ((**Iter).row <20) {
+            if ((**Iter).row <20)
+            {
                 Draw((**Iter).row, (**Iter).col, (**Iter).str);
             }
 
             if ((**Iter).row > 20) {
                 pthread_mutex_lock(&lock);
                 hp--;
+                if(hp ==0)
+                {
+                    
+                    GameOver();
+                    sleep(5);
+                    endwin();
+                    exit(0);
+                }
+
                 WordList.pop_front();
                 pthread_mutex_unlock(&lock);
 
@@ -140,7 +152,7 @@ void *Rain::Game_Board(void *) {
             }
         }
 
-
+       
         move(20, 36);
     }
 }
@@ -152,8 +164,6 @@ void Rain::Draw(int row, int col, char *str) {
 }
 
 
-
-char **Rain::Get_Words() { return STAGE1; }
 
 // WordList에 있는 모든 단어들을 2칸씩 내린다
 void Rain::Down_Words() {
@@ -206,4 +216,15 @@ void Blank_OutputWord() {
         move(i, 10);
         addstr("                                                            ");
     }
+}
+
+
+void Rain::GameOver()
+{
+    clear();
+    Blank_OutputWord();
+    move(11,33);   
+    addstr("GameOver...");
+    refresh();
+    return ;
 }
