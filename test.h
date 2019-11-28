@@ -15,6 +15,7 @@
 #include <vector>
 #include <list>
 
+
 #define STAGE1_WORD_DOWN_TIME 5
 #define WORD_MAX 50
 using namespace std;
@@ -32,36 +33,45 @@ WordNodePointer ptr;
 list<WordNodePointer> WordList;
 list<WordNodePointer>::iterator Iter;
 
+pthread_mutex_t lock = PTHREAD_MUTEX_INITIALIZER;
 
-class Rain
-{
-    private:
-      char enter[30] = {0};
-      int enter_num;
-      int score = 0;
-      int hp = 20;
-      char hp_Bar[10];
-      char score_Bar[10];
-      char enter_Bar[20] = "	| Enter | : ";
-      char stage[10] = "STAGE";
-      char stageName[15] = "숲";
+class Rain {
+  private:
+    char enter[30] = {0};
+    int enter_num;
+    int hp = 10;
+    char hp_Bar[10];
+    char score_Bar[10];
 
-    public:
-      void FindWords(char* str);
-      void *Game_Board(void *);
-      void Game_Start();
-      void Draw(int row, int col, char *str);
-      void Print_Words();
-      char **Get_Words();
-      void Down_Words();
-      WordNodePointer Initnode(void);
-      WordNodePointer CreateWord(char *str);
-      void CreateList();
-      void GameOver();
+    char enter_Bar[20] = "	| Enter | : ";
+    char stage[10] = "STAGE";
+    char stageName[15] = "숲";
+    int score = 0;
+    int input;
+
+  public:
+    void FindWords(char *str);
+    void *Game_Board_1(void *);
+    void *Game_Board_2(void *);
+    void *Game_Board_3(void *);
+    void Game_Start();
+    void Draw(int row, int col, char *str);
+    void Print_Words();
+    char **Get_Words();
+    void Down_Words();
+    WordNodePointer Initnode(void);
+    WordNodePointer CreateWord(char *str);
+    void CreateList_1();
+    void CreateList_2();
+    void CreateList_3();
+    void GameOver();
 };
 typedef void *(*THREADFUNCPTR)(void *);
 
-char* Return_Str();
+char* Return_STAGE1();
+char *Return_STAGE2();
+char *Return_STAGE3();
+
 void Blank_OutputWord();
 
 //Fruit
@@ -75,6 +85,6 @@ char* STAGE3[] = {"Mathemtics","Physics", "Quantum Mechanics","Apparel study","R
 ,"literature","Psychology","Korean Medicine","Earth science","Pedagogy Education","Astronomy","Medicine","Architecture","Biology","Archaeology",
 "Mechanical engineering","Dentistry","Sociology","Humanities","Natural science"};
 
- pthread_mutex_t lock = PTHREAD_MUTEX_INITIALIZER;
+
 
 #endif
