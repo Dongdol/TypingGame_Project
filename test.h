@@ -65,6 +65,7 @@ class Rain {
     void CreateList_2();
     void CreateList_3();
     void GameOver();
+    void GameComplete();
 };
 typedef void *(*THREADFUNCPTR)(void *);
 

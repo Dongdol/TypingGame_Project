@@ -42,10 +42,10 @@ void Rain::Game_Start() {
     Draw(23, 0, "--------------------------------------------------------------------------------");
     usleep(500000);
 
-    //                                              Stage1 START
+    //                      Stage1 START
     move(0, 74);
     addstr("STAGE1");
-    move(1, 60);
+    move(22, 36);
 
     pthread_create(&pthread1, NULL, (THREADFUNCPTR)&Rain::Game_Board_1, arg);
 
@@ -98,11 +98,11 @@ void Rain::Game_Start() {
 
     }
 
-    //                                              Stage2 START
+    //                      Stage2 START
 
     move(0, 74);
     addstr("STAGE2");
-    move(1, 60);
+    move(22, 36);
 
     pthread_create(&pthread2, NULL, (THREADFUNCPTR)&Rain::Game_Board_2, arg);
 
@@ -158,7 +158,7 @@ void Rain::Game_Start() {
 
     move(0, 74);
     addstr("STAGE3");
-    move(1, 60);
+    move(22, 36);
 
     pthread_create(&pthread3, NULL, (THREADFUNCPTR)&Rain::Game_Board_3, arg);
 
@@ -210,18 +210,11 @@ void Rain::Game_Start() {
         }
     }
 
-    clear();
-    Blank_OutputWord();
-    move(11, 33);
-    addstr("YOU DID IT!!!!");
-    refresh();
-
-    sleep(5);
+    GameComplete();
+    sleep(3);
     endwin();
     exit(0);
 }
-//입력한 단어가 화면에 있는 단어와 일치하면 제거하고 스코어 +10
-
 
 void *Rain::Game_Board_1(void *) {
     pthread_t tid1 = 0;
@@ -342,7 +335,7 @@ void *Rain::Game_Board_3(void *) {
         move(22, 36);
     }
 }
-
+//입력한 단어가 화면에 있는 단어와 일치하면 제거하고 스코어 +10
 void Rain::FindWords(char *str) {
     for (Iter = WordList.begin(); Iter != WordList.end(); ++Iter) {
         if (!strcmp((**Iter).str, str)) {
@@ -439,6 +432,15 @@ void Blank_OutputWord() {
         move(i, 10);
         addstr("                                                            ");
     }
+}
+
+void Rain::GameComplete(){
+    clear();
+    Blank_OutputWord();
+    move(11, 33);
+    addstr("YOU DID IT!!!!");
+    refresh();
+    return;
 }
 void Rain::GameOver()
 {
