@@ -1,12 +1,10 @@
-#include "test.h"
+#include "RainGame.hpp"
 
-int main() {
-    Rain Rain;
-    Rain.Game_Start();
-    return 0;
-}
+list<WordNodePointer>::iterator Iter;
+list<WordNodePointer> WordList;
 
 void Rain::Game_Start() {
+
     pthread_t pthread1 = 0;
     pthread_t pthread2 = 0;
     pthread_t pthread3 = 0;
@@ -28,18 +26,22 @@ void Rain::Game_Start() {
     addstr(hp_Bar);
     refresh();
 
-    // Inventory
-    move(2, 0);
-    addstr("Inventory: ");
-    refresh();
+    //  Inventory 미구현
+    // move(2, 0);
+    // addstr("Inventory: ");
+    // refresh();
 
     refresh();
     usleep(500000);
 
     // enter_position
-    Draw(21, 0, "--------------------------------------------------------------------------------");
-    Draw(22, 20,enter_Bar);
-    Draw(23, 0, "--------------------------------------------------------------------------------");
+    Draw(21, 0,
+         "--------------------------------------------------------------------"
+         "------------");
+    Draw(22, 20, enter_Bar);
+    Draw(23, 0,
+         "--------------------------------------------------------------------"
+         "------------");
     usleep(500000);
 
     //                      Stage1 START
@@ -47,6 +49,7 @@ void Rain::Game_Start() {
     addstr("STAGE1");
     move(22, 36);
 
+    usleep(5);
     pthread_create(&pthread1, NULL, (THREADFUNCPTR)&Rain::Game_Board_1, arg);
 
     while (hp > 0) {
@@ -61,17 +64,17 @@ void Rain::Game_Start() {
                 enter[enter_num] = '\0'; //개행 문자 널로 바꾸기
                 FindWords(enter);
 
-                for (int i = 0; i < 30;i++){
+                for (int i = 0; i < 30; i++) {
                     enter[i] = '\0';
                 }
 
                 move(22, 36);
-                addstr("                      "); //enter하는 곳 비우기
+                addstr("                      "); // enter하는 곳 비우기
                 Draw(22, 20, enter_Bar);
                 move(22, 36);
 
                 break;
-            } else if(input == 127){ //백스페이스 눌렀을 때
+            } else if (input == 127) {   //백스페이스 눌렀을 때
                 enter[enter_num] = '\0'; //개행 문자 널로 바꾸기
 
                 enter[--enter_num] = '\0';
@@ -85,17 +88,16 @@ void Rain::Game_Start() {
                 addstr(enter);
             }
 
-           refresh();
+            refresh();
         }
 
-        if(score >= 20){
+        if (score >= 20) {
             pthread_cancel(pthread1); //현재 스레드 종료
             for (Iter = WordList.begin(); Iter != WordList.end();) {
                 Iter = WordList.erase(Iter);
             }
             break;
         }
-
     }
 
     //                      Stage2 START
@@ -201,7 +203,7 @@ void Rain::Game_Start() {
             refresh();
         }
 
-        if (score >=70) {
+        if (score >= 70) {
             pthread_cancel(pthread3); //현재 스레드 종료
             for (Iter = WordList.begin(); Iter != WordList.end();) {
                 Iter = WordList.erase(Iter);
@@ -402,7 +404,7 @@ WordNodePointer Rain::Initnode(void) {
     return word;
 }
 // str문자열을 담은 노드를 반환
-WordNodePointer Rain::CreateWord(char *str) {
+WordNodePointer Rain::CreateWord(const char *str) {
     srand(time(NULL));
     WordNodePointer word = Initnode();
     strcpy(word->str, str);
@@ -412,17 +414,17 @@ WordNodePointer Rain::CreateWord(char *str) {
     return word; //노드 반환
 }
 
-char *Return_STAGE1() {
+const char *Rain::Return_STAGE1() {
     srand((int)time(NULL));
     int index = rand() % 12;
     return STAGE1[index];
 }
-char *Return_STAGE2() {
+const char *Rain::Return_STAGE2() {
     srand((int)time(NULL));
     int index = rand() % 12;
     return STAGE2[index];
 }
-char *Return_STAGE3() {
+const char *Rain::Return_STAGE3() {
     srand((int)time(NULL));
     int index = rand() % 12;
     return STAGE3[index];
