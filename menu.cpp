@@ -13,13 +13,14 @@ void Menu::mainmenu()
     Game game;
     Rain rain;
     system("clear"); //콘솔창 초기화
-    cout << "\n\n\n\n\n\n\n\n\n\n\n";
-    cout << " TTTTT  Y   Y  PPPP  III  N     N   GGG       GGG       A       M   M    EEEEE "<< endl;
-    cout << "   T     Y Y   P   P  I   NN    N  G         G         A A     M M M M   E      "<< endl;
-    cout << "   T      Y    PPPP   I   N NNN N G   GGG   G   GGG   A   A   M   M   M  EEEEE "<< endl;
-    cout << "   T      Y    P      I   N    NN  G   G     G   G   A AAA A  M       M  E      "<< endl;
-    cout << "   T      Y    P     III  N     N   GGG       GGG   A       A M       M  EEEEE   Ver 1.0" <<endl;
-    cout << "\n\n\n\n\n\n\n\n\n\n\n\n[시작하려면 아무키나 누르세요]";
+    cout << "\n\n\n\n\n\n\n\n\n\n\n\n";
+
+    cout << " TTTTTTT  Y   Y  PPPP  III  N    N   GGG       GGG       A       M   M    EEEEE "<< endl;
+    cout << "    T      Y Y   P   P  I   NN   N  G         G         A A     M M M M   E     "<< endl;
+    cout << "    T       Y    PPPP   I   N NN N G   GGG   G   GGG   A   A   M   M   M  EEEEE "<< endl;
+    cout << "    T       Y    P      I   N   NN  G   G     G   G   A AAA A  M       M  E     "<< endl;
+    cout << "    T       Y    P     III  N    N   GGG       GGG   A       A M       M  EEEEE "<<endl;
+    cout << "\n\n\n\n\n\n\n\n\n\n\n\n[시작하려면 엔터키[ENTER]를 누르세요.]";
     cin.get();
 
      while (1) {
@@ -59,7 +60,20 @@ void Menu::mainmenu()
 void Menu::help()
 {
     system("clear");
-    cout << "타자연습게임입니다" << endl;
-    cout << "아무키나 누르면 메인 메뉴로 이동합니다";
+    cout << "타자연습게임입니다" << endl << endl;
+
+    cout << "1.타자 연습 모드는 한글과 영어를 선택할 수 있습니다." << endl;
+    cout << "자신의 오타수와 속도를 확인할 수 있습니다." << endl;
+    cout << "게임 진행 중 틀린 글자는 다른 색상으로 표시됩니다!"
+    << endl << endl << endl;
+    cout << "2.산성비 모드에서는 내려오는 단어를 입력하면 점수가 상승합니다."
+         << endl;
+    cout << "특정 점수를 만족하면 다음 레벨로 진행됩니다. 영어로 진행됩니다."
+         << endl<<endl;
+    cout << "1레벨(과일)    100점 충족시 2레벨 진입" << endl<<endl;
+    cout << "2레벨(노래 제목)   180점 충족시 3레벨 진입" << endl<<endl;
+    cout << "3레벨(학문)    250점 충족시 게임 클리어" << endl<<endl<<endl<<endl;
+
+    cout << "엔터 키를 누르시면 메인 메뉴로 이동합니다.";
     cin.get();
 }
