@@ -135,10 +135,10 @@ int Game::basicgame()
         total_typenum += rsize;
 
          printf("%c[32m",27);
-        printf("%s\n", Buf_E); // txt 파일 문자열 출력
+        cout << Buf_E << endl; // txt 파일 문자열 출력
         printf("%c[0m",27);
 
-        // fgets(put_String_E, 100, stdin);
+        
         for(int i = 0; put_String_E[i] != '\n'; i++){
 
 
@@ -198,8 +198,8 @@ int Game::basicgame()
 
         total_typenum += rsize;
 
-         printf("%c[32m",27);
-        printf("%s\n", Buf_H); // txt 파일 문자열 출력
+        printf("%c[32m",27);
+        cout << Buf_H << endl; // txt 파일 문자열 출력
         printf("%c[0m",27);
 	
 	for(int i = 0; put_String_H[i] != '\n'; i++){
