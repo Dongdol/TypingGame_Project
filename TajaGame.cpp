@@ -1,9 +1,9 @@
 #include "TajaGame.h"
 
 			
-int getch()		//getch() 함수 구현
+char getch()		//getch() 함수 구현
 {
-    int c;
+    char c;
     struct termios oldattr, newattr;
 
     tcgetattr(STDIN_FILENO, &oldattr);
