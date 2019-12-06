@@ -10,6 +10,28 @@ void Game::Print_Result()
     cout << "평균타수: " << ((float)total_typenum / type_during_Time) * 60 <<endl;
     cout << "정확도: " << accuarcy <<"%"<<endl;
 
+    //added func started
+    
+    UserScore *user=new UserScore;    
+    user->spd=(float)total_typenum / type_during_Time*60;
+    user->accuracy=accuarcy;
+
+    fd=open(SCOREFILE, O_CREAT | O_RDWR | O_APPEND, 0644);
+    if(fd==-1) {
+	    perror("open() error!");
+	    exit(-1);
+    }
+
+    w_Size=write(fd, (UserScore*)user, sizeof(UserScore));
+    if(w_Size==-1) {
+	    perror("write() error!");
+	    exit(-2);
+    }
+
+    close(fd);
+
+    //added func finished
+    
     err_typenum =0;
     total_typenum =0;
     accuarcy =0.0;
@@ -19,6 +41,37 @@ void Game::Print_Result()
     sleep(3);
 
 }
+
+// added func started
+void readScore() {
+	system("clear");	// clear moniter
+	cout << "<Records>" << endl << endl;
+	cout << "Speed\t\t" << "Accuracy \t\t" << endl; //UI
+
+        fd=open(SCOREFILE, O_CREAT | O_RDONLY, 0644);
+        if(fd==-1) {
+                perror("open() error!");
+                exit(-1);
+        }
+
+        UserScore *user=new UserScore;
+	
+	r_Size=1;
+	
+	while(1) {
+		r_Size=read(fd, (UserScore*)user, sizeof(UserScore));
+		if(r_Size==0)
+			break;
+                cout << user->spd << "\t\t";
+		cout << user->accuracy << "\t\t";
+	        cout << endl;
+
+	}
+	
+	close(fd);
+	cin >> r_Size;
+}
+// added func finished
 
 void Game::Remove_Enter(char put_String[], int len)
 {
@@ -159,4 +212,4 @@ int Game::basicgame()
     total_typenum -= err_typenum; // 오타수만큼 제거
 
     Print_Result();
-    }
+}

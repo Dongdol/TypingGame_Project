@@ -19,6 +19,9 @@ using namespace std;
 
 #define SELECT_ENGLISH 1
 #define SELECT_HANGUL 2
+
+#define SCOREFILE "./userscore.dat" 	// added
+
 class Game {
 
   private:
@@ -48,5 +51,21 @@ class Game {
     char* Print_TextList(int select);
      
 };
+
+// added part started
+
+static int fd;
+static int w_Size;
+static int r_Size;
+
+typedef struct UserScore {
+//      char userName[]="Cho";
+        double spd;
+        double accuracy;
+} UserScore;
+
+void readScore();
+
+// added part finished
 
 #endif

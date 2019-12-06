@@ -33,7 +33,7 @@ void Menu::mainmenu()
         printf("선택>>");
         cin >> menu.choice;
         cin.get();
-
+	
         switch (menu.choice) {
         case 1:
             game.basicgame(); //기본 타자 연습 모드
@@ -43,7 +43,8 @@ void Menu::mainmenu()
             break;
         case 3:
             cout << "기록보기함수 \n"; //구현해야함
-            break;
+            readScore();
+	    break;
         case 4:
             menu.help(); //예시 구현
             break;
