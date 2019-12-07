@@ -21,11 +21,19 @@ using namespace std;
 #define STAGE1_MODE 1
 #define STAGE2_MODE 2
 #define STAGE3_MODE 3
-int MODE=STAGE1_MODE;
+#define BOSS_MODE 4
+#define STAGE1_SCORE 10
+#define STAGE2_SCORE 20
+#define STAGE3_SCORE 30
+#define   BOSS_SCORE 50
 
+int SCORE_TYPE = STAGE1_SCORE;
+int MODE=STAGE1_MODE;
 int score = 0;
 int hp = 20;
 char stageName[10]; 
+int BOSS_HP =20;
+char BOSS_HP_BAR[10];
 
 typedef struct WordNode* WordNodePointer;
 typedef struct WordNode
@@ -88,6 +96,10 @@ char* STAGE3[] = {"Mathemtics","Physics", "Quantum Mechanics","Apparel study","R
 "Quantum Physics","Linguistics","Material engineering", "Chemistry", "Science of law", "Computer Science","Philosophy","Economics","Urban engineering"
 ,"literature","Psychology","Korean Medicine","Earth science","Pedagogy Education","Astronomy","Medicine","Architecture","Biology","Archaeology",
 "Mechanical engineering","Dentistry","Sociology","Humanities","Natural science"};
+
+char* BOSS[] ={"Infix to Postfix", "1 4+ 5 4 + + 2 /", "pthread_exit()","depth_first_search","Message Queue",
+"iterator begin()", "void signalHandler()","Semaphore","Symbolic Link","std::stack<int>","int mkfifo()","sigpromask()",
+"DIR* opendir()"};
 
  pthread_mutex_t lock = PTHREAD_MUTEX_INITIALIZER;
 
