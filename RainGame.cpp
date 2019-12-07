@@ -6,21 +6,27 @@ list<WordNodePointer>::iterator Iter;
 
 
 void Rain::Game_Start() {
-     Rain *arg = new Rain();
+    Rain *arg = new Rain();
     pthread_t pthread = 0;
-    
-    strcpy(stageName,"STAGE1");
-    srand(time(NULL));
-    clear();
-    initscr(); //  curses모드 시작!!
-     
-    Print_UI();
-    
+
+    //strcpy(stageName,"STAGE1");
+    //srand(time(NULL));
+    //clear();
+    initscr(); // curses모드 시작!!
+
+    Print_UI(); //얘 주석처리안하면 Stage1 로딩화면도 색깔표시됌
+
     usleep(500000);
 
     pthread_create(&pthread, NULL, (THREADFUNCPTR)&Rain::Game_Board, arg);
 
     while (hp > 0 || BOSS_HP !=0) {
+
+        if (score == 0 && MODE == START_MODE) {
+            clear();
+            sleep(5);
+            Print_UI();
+        }
 
         enter_num = 0;
         for (enter_num = 0; enter_num < 30;) {
@@ -42,8 +48,7 @@ void Rain::Game_Start() {
                 attroff( COLOR_PAIR(3));
                 break;
             } else if (input == 127) {   //백스페이스 눌렀을 때
-                enter[enter_num] = '\0'; //개행 문자 널로 바꾸기
-
+                if(enter_num>0){
                 enter[--enter_num] = '\0';
                 attron( COLOR_PAIR(3));
                 move(22, 36);
@@ -51,40 +56,44 @@ void Rain::Game_Start() {
                 move(22, 36);
                 addstr(enter);
                 attroff( COLOR_PAIR(3));
-                
+                }else{
+                    move(22, 36);
+                    addstr("                      "); // enter하는 곳 비우기
+                    move(22, 36);
+                }
+
             } else { //문자 입력할 때
                    attron(COLOR_PAIR(3));
                 enter[enter_num++] = input;
                 move(22, 36);
                 addstr(enter);
                 attroff( COLOR_PAIR(3));
-                
+
             }
 
            refresh();
         }
-    
-        if(score==100 && MODE == STAGE1_MODE)
+
+        if(score==100 && MODE == STAGE1_MODE) // 2단계
         {
             clear();
             sleep(6);
             Print_UI();
         }
+        else if(score == 120 && MODE == STAGE2_MODE) // 3단계
+        {
+            sleep(6);
+            Print_UI();
+        }
 
-        else if(score == 400 && MODE == STAGE2_MODE)
+        else if(score == 150 && STAGE3_MODE) // 보스
         {
             sleep(6);
             Print_UI();
         }
-        
-        else if(score == 700 && STAGE3_MODE)
-        {
-            sleep(6);
-            Print_UI();
-        }
-       
+
     }
-   
+
     pthread_join(pthread, NULL);
     Blank_OutputWord();
     refresh();
@@ -107,16 +116,16 @@ void Rain::Print_UI()
     attrset(A_BOLD);
     move(1, 0);
     addstr("score: ");
-    
+
     sprintf(score_Bar, "%d", score);
     move(1,7);
     attron( COLOR_PAIR(2));
     addstr(score_Bar);
     refresh();
     attroff( COLOR_PAIR(2));
-    
+
     // hp print
-   
+
     move(0, 0);
     addstr("life: ");
     sprintf(hp_Bar, "%d", hp);
@@ -166,12 +175,12 @@ void Rain::Print_UI()
 void Rain::FindWords(char *str) {
     for (Iter = WordList.begin(); Iter != WordList.end(); ++Iter){
         if (!strcmp((**Iter).str,str))
-        {   
+        {
              WordList.erase(Iter);
              Iter = WordList.begin();
 
              if(MODE == BOSS_MODE)
-             {      
+             {
                    BOSS_HP--;
                    attron(COLOR_PAIR(1));
                    move(1,69);
@@ -181,7 +190,7 @@ void Rain::FindWords(char *str) {
                   refresh();
                   attroff(COLOR_PAIR(1));
              }
-        
+
 
              score += SCORE_TYPE;
              move(1, 0);
@@ -198,8 +207,17 @@ void Rain::FindWords(char *str) {
 
 void *Rain::Game_Board(void *) {
     while (hp > 0) {
-        
-        if(score==100 && MODE == STAGE1_MODE)
+        if(score==0 && MODE == START_MODE){
+            SCORE_TYPE = STAGE1_SCORE;
+            MODE = STAGE1_MODE;
+            memset(stageName, '\0', sizeof(char) * 10);
+            strcpy(stageName, "STAGE1");
+            WordList.clear();
+            Blank_OutputWord();
+            clear();
+            StageChange();
+        }
+        else if(score==100 && MODE == STAGE1_MODE) // 2단계
         {
             SCORE_TYPE = STAGE2_SCORE;
             MODE = STAGE2_MODE;
@@ -209,10 +227,10 @@ void *Rain::Game_Board(void *) {
             Blank_OutputWord();
             clear();
             StageChange();
-            
+
         }
         //단어 입력시 스코어 30으로 변경후 스테이지 변경
-        else if(score ==400 && MODE == STAGE2_MODE)
+        else if(score ==120 && MODE == STAGE2_MODE) // 3단계
         {
             SCORE_TYPE = STAGE3_SCORE;
             MODE = STAGE3_MODE;
@@ -223,9 +241,7 @@ void *Rain::Game_Board(void *) {
             clear();
             StageChange();
         }
-        
-
-        else if(score == 700  && MODE == STAGE3_MODE ) 
+        else if(score == 150  && MODE == STAGE3_MODE ) // 보스
         {
             SCORE_TYPE = BOSS_SCORE;
             MODE = BOSS_MODE;
@@ -236,7 +252,6 @@ void *Rain::Game_Board(void *) {
             clear();
             StageChange();
         }
-        
         //보스 HP =0이면 게임을 종료한다
         else if(BOSS_HP ==0 && MODE == BOSS_MODE)
         {
@@ -244,8 +259,8 @@ void *Rain::Game_Board(void *) {
             GameComplete();
             pthread_exit(NULL);
         }
-        
-        
+
+
         CreateList();
         Blank_OutputWord();
         //문자열 출력
@@ -263,7 +278,6 @@ void *Rain::Game_Board(void *) {
                 hp--;
                 if(hp ==0)
                 {
-                    
                     GameOver();
                     sleep(5);
                     endwin();
@@ -273,6 +287,8 @@ void *Rain::Game_Board(void *) {
                 WordList.pop_front();
                 pthread_mutex_unlock(&lock);
 
+                move(0, 0);
+                addstr("                      ");
                 move(0, 0);
                 addstr("life: ");
                 attron(COLOR_PAIR(1));
@@ -286,7 +302,6 @@ void *Rain::Game_Board(void *) {
             }
         }
 
-       
         move(22, 36);
     }
 }
@@ -297,11 +312,9 @@ void Rain::Draw(int row, int col, char *str) {
     refresh();
 }
 
-
-
 // WordList에 있는 모든 단어들을 2칸씩 내린다
 void Rain::Down_Words() {
-     
+
     for (Iter = WordList.begin(); Iter != WordList.end(); ++Iter) {
         (**Iter).row += 2;
     }
@@ -345,7 +358,7 @@ void Rain::CreateList() {
 char* Rain::Return_Str() {
     srand((int)time(NULL));
     int index = rand() % 13+1;
-    
+
     switch(MODE)
     {
         case STAGE1_MODE:
@@ -356,41 +369,60 @@ char* Rain::Return_Str() {
             return STAGE3[index];
         case BOSS_MODE:
             return BOSS[index%7];
-    } 
-    
+    }
+
 }
 
 void Blank_OutputWord() {
-    for (int i = 2; i < 19; i++) {
+    for (int i = 2; i < 21; i++) {
         move(i, 10);
         addstr("                                                            ");
     }
 }
 
-
-void Rain::GameComplete(){
+void Rain::GameComplete() {
     clear();
     Blank_OutputWord();
-    move(11, 33);
-    addstr("YOU DID IT!!!!");
+    Draw(8, 8,  "  V     V  III   CCC  TTTTT  OOO   RRRR   Y   Y   !! !!  ");
+    Draw(9, 8,  "  V     V   I   C   C   T   O   O  R   R   Y Y    !! !!  ");
+    Draw(10, 8, "   V   V    I   C       T   O   O  RRRR     Y     !! !!  ");
+    Draw(11, 8, "    V V     I   C   C   T   O   O  R  R     Y            ");
+    Draw(12, 8, "     V     III   CCC    T    OOO   R   R    Y     !! !!  ");
     refresh();
     return;
 }
 
-void Rain::GameOver()
-{
+void Rain::GameOver() {
     clear();
     Blank_OutputWord();
-    move(11,33);
-    addstr("GameOver...");
+    Draw(8, 2,
+         "    GGG       A       M   M    EEEEE   OOO   V     V EEEEE  RRRR     "
+         "   ");
+    Draw(9, 2,
+         "   G         A A     M M M M   E      O   O  V     V E      R   R    "
+         "   ");
+    Draw(10, 2,
+         "  G   GGG   A   A   M   M   M  EEEEE  O   O   V   V  EEEEE  RRRR     "
+         "  ");
+    Draw(11, 2,
+         "   G   G   A AAA A  M       M  E      O   O    V V   E      R  R     "
+         "  ");
+    Draw(12, 2,
+         "    GGG   A       A M       M  EEEEE   OOO      V    EEEEE  R   R "
+         ".....");
+
     refresh();
-    return ;
+    return;
 }
 
 void Rain::StageChange()
 {
     char * loading_Str  = new char[30];
-    if(MODE == STAGE2_MODE)
+
+    if(MODE == STAGE1_MODE){
+        strcpy(loading_Str,"STAGE1");
+    }
+    else if(MODE == STAGE2_MODE)
     {
         strcpy(loading_Str,"STAGE2");
     }
@@ -400,9 +432,9 @@ void Rain::StageChange()
     }
     else
     {
-        strcpy(loading_Str,"BOSS ");
+        strcpy(loading_Str,"BOSS");
     }
-    
+
 
     Draw(22,50,"If you play game for long time");
     Draw(23,50,"you can hurt yourself.");

@@ -18,6 +18,7 @@ using namespace std;
 
 #define STAGE1_WORD_DOWN_TIME 5
 #define WORD_MAX 50
+#define START_MODE 0
 #define STAGE1_MODE 1
 #define STAGE2_MODE 2
 #define STAGE3_MODE 3
@@ -28,10 +29,10 @@ using namespace std;
 #define   BOSS_SCORE 50
 
 int SCORE_TYPE = STAGE1_SCORE;
-int MODE=STAGE1_MODE;
+int MODE=START_MODE;
 int score = 0;
 int hp = 20;
-char stageName[10]; 
+char stageName[10];
 int BOSS_HP =20;
 char BOSS_HP_BAR[10];
 
@@ -45,24 +46,24 @@ typedef struct WordNode
 }WordNode;
 
      int enter_num;
-      
+
       char hp_Bar[10];
       char score_Bar[10];
       char enter_Bar[20] = "	| Enter | : ";
-     
-  
+
+
       int input;
- 
+
 
 class Rain
 {
     private:
-      
+
 
     public:
       void GameComplete();
       void StageChange();
-      void Print_UI(); 
+      void Print_UI();
       void FindWords(char* str);
       void *Game_Board(void *);
       void Game_Start();
@@ -76,7 +77,7 @@ class Rain
       void GameOver();
       char *Return_Str();
       char enter[30] = {0};
-    
+
 };
 typedef void *(*THREADFUNCPTR)(void *);
 
