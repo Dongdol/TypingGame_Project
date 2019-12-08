@@ -1,17 +1,20 @@
+#include "RainGame.hpp"
 #include "menu.h"
 #include "TajaGame.h"
-#include "RainGame.hpp"
 #include <iostream>
 #include <stdlib.h>
 #include <unistd.h>
 
-void Menu::mainmenu()
- {
-    list<WordNodePointer> WordList;
-    list<WordNodePointer>::iterator Iter;
+short Menu::mainmenu()
+ { 
+   // list<WordNodePointer> WordList;
+   // list<WordNodePointer>::iterator Iter;
+    
     Menu menu;
     Game game;
     Rain rain;
+    short ON = 1;
+    short OFF =0;
     system("clear"); //콘솔창 초기화
     cout << "\n\n\n\n\n\n\n\n\n\n\n\n";
 
@@ -23,7 +26,8 @@ void Menu::mainmenu()
     cout << "\n\n\n\n\n\n\n\n\n\n\n\n[시작하려면 엔터키[ENTER]를 누르세요.]";
     cin.get();
 
-     while (1) {
+    
+       
         system("clear"); //콘솔창 초기화
         cout << "1.타자 연습 게임" << endl << endl;
         cout << "2.소나기 게임" << endl << endl;
@@ -31,16 +35,17 @@ void Menu::mainmenu()
         cout << "4.도움말" << endl << endl;
         cout << "5.종료" << endl << endl;
         printf("선택>>");
-        cin >> menu.choice;
-        cin.get();
+        
+        cin>>menu.choice;
 
         switch (menu.choice) {
         case 1:
             game.basicgame(); //기본 타자 연습 모드
             break;
         case 2:
+            while(getchar()!='\n');
             rain.Game_Start(); //산성비 모드
-            break;
+            break; 
         case 3:
             cout << "기록보기함수 \n"; //구현해야함
             break;
@@ -49,17 +54,18 @@ void Menu::mainmenu()
             break;
         case 5:
             system("clear");
-            return; //게임 종료
-            break;
+            return OFF; //게임 종료
         default:
             break;
-        }
+         
     }
+    return ON;
 }
 
 void Menu::help()
 {
     system("clear");
+    getchar();
     cout << "타자연습게임입니다" << endl << endl;
 
     cout << "1.타자 연습 모드는 한글과 영어를 선택할 수 있습니다." << endl;
@@ -74,6 +80,7 @@ void Menu::help()
     cout << "2레벨(노래 제목)   180점 충족시 3레벨 진입" << endl<<endl;
     cout << "3레벨(학문)    250점 충족시 게임 클리어" << endl<<endl<<endl<<endl;
 
-    cout << "엔터 키를 누르시면 메인 메뉴로 이동합니다.";
-    cin.get();
+    cout << "엔터 키를 누르시면 메인 메뉴로 이동합니다.\n";
+
+    while(!cin.get());
 }

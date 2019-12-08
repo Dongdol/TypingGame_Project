@@ -27,14 +27,34 @@ using namespace std;
 #define STAGE2_SCORE 20
 #define STAGE3_SCORE 30
 #define   BOSS_SCORE 50
+ 
+//Fruit
+static char* STAGE1[] = {"Banana","Mango","Apple","Watermelon","Orange","Strawberry","Durian","Grape","Citrus","Mangosteen","Plum","Peach","Pineapple","Coconnut","Sugarcane","Blueberry","Pear","flg","Persimmon","Pomegranate"};
+//Music
+static char* STAGE2[] = {"You And I", "Reality", "Workerholic", "Blueming", "Mirotic","Yes or Yes", "Heartshaker", "IDOL","Travel","Good Day","Attention","All falls down","Despacito","Shape of you","DINOSAUR","UmpahUmpah"
+ ,"Viva La Vida","What the hell","Alone","2002","Lost Stars","Love$ick","7rings","Speechless","Handclap","We all lie","The Ocean","Move Like Jagger","Reminiscence","HymnForTheWeekend" };
+//Discipline
+static char* STAGE3[] = {"Mathemtics","Physics", "Quantum Mechanics","Apparel study","Religious studies","Food and Nutrition",
+"Quantum Physics","Linguistics","Material engineering", "Chemistry", "Science of law", "Computer Science","Philosophy","Economics","Urban engineering"
+,"literature","Psychology","Korean Medicine","Earth science","Pedagogy Education","Astronomy","Medicine","Architecture","Biology","Archaeology",
+"Mechanical engineering","Dentistry","Sociology","Humanities","Natural science"};
 
-int SCORE_TYPE = STAGE1_SCORE;
-int MODE=START_MODE;
-int score = 0;
-int hp = 20;
-char stageName[10];
-int BOSS_HP =20;
-char BOSS_HP_BAR[10];
+static char* BOSS[] ={"Infix to Postfix", "1 4+ 5 4 + + 2 /", "pthread_exit()","depth_first_search","Message Queue",
+"iterator begin()", "void signalHandler()","Semaphore","Symbolic Link","std::stack<int>","int mkfifo()","sigpromask()",
+"DIR* opendir()"};
+static int SCORE_TYPE=STAGE1_SCORE;
+static int MODE=START_MODE;
+static int score=0;
+static int hp=1;
+static char stageName[10];
+static int BOSS_HP=3;
+static char BOSS_HP_BAR[10];
+static int enter_num;
+static char hp_Bar[10];
+static char score_Bar[10];
+static char enter_Bar[20] = "	| Enter | : ";
+static int input;
+static pthread_mutex_t lock;
 
 typedef struct WordNode* WordNodePointer;
 typedef struct WordNode
@@ -45,14 +65,7 @@ typedef struct WordNode
 
 }WordNode;
 
-     int enter_num;
-
-      char hp_Bar[10];
-      char score_Bar[10];
-      char enter_Bar[20] = "	| Enter | : ";
-
-
-      int input;
+    
 
 
 class Rain
@@ -87,22 +100,7 @@ char* Return_Str();
 void Blank_OutputWord();
 void Blank_OutputWord_All();
 
-//Fruit
-char* STAGE1[] = {"Banana","Mango","Apple","Watermelon","Orange","Strawberry","Durian","Grape","Citrus","Mangosteen","Plum","Peach","Pineapple","Coconnut","Sugarcane","Blueberry","Pear","flg","Persimmon","Pomegranate"};
-//Music
-char* STAGE2[] = {"You And I", "Reality", "Workerholic", "Blueming", "Mirotic","Yes or Yes", "Heartshaker", "IDOL","Travel","Good Day","Attention","All falls down","Despacito","Shape of you","DINOSAUR","UmpahUmpah"
- ,"Viva La Vida","What the hell","Alone","2002","Lost Stars","Love$ick","7rings","Speechless","Handclap","We all lie","The Ocean","Move Like Jagger","Reminiscence","HymnForTheWeekend" };
-//Disciplines
-char* STAGE3[] = {"Mathemtics","Physics", "Quantum Mechanics","Apparel study","Religious studies","Food and Nutrition",
-"Quantum Physics","Linguistics","Material engineering", "Chemistry", "Science of law", "Computer Science","Philosophy","Economics","Urban engineering"
-,"literature","Psychology","Korean Medicine","Earth science","Pedagogy Education","Astronomy","Medicine","Architecture","Biology","Archaeology",
-"Mechanical engineering","Dentistry","Sociology","Humanities","Natural science"};
 
-char* BOSS[] ={"Infix to Postfix", "1 4+ 5 4 + + 2 /", "pthread_exit()","depth_first_search","Message Queue",
-"iterator begin()", "void signalHandler()","Semaphore","Symbolic Link","std::stack<int>","int mkfifo()","sigpromask()",
-"DIR* opendir()"};
-
- pthread_mutex_t lock = PTHREAD_MUTEX_INITIALIZER;
 
 
 

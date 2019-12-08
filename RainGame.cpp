@@ -4,30 +4,29 @@
 list<WordNodePointer> WordList;
 list<WordNodePointer>::iterator Iter;
 
-
+ 
 void Rain::Game_Start() {
     Rain *arg = new Rain();
-    pthread_t pthread = 0;
-
+    pthread_t pthread = 0; 
+    short COLOR_USR1;
     //strcpy(stageName,"STAGE1");
     //srand(time(NULL));
     //clear();
-    initscr(); // curses모드 시작!!
+    initscr(); // curses모드 시작!! 
 
-    Print_UI(); //얘 주석처리안하면 Stage1 로딩화면도 색깔표시됌
-
-    usleep(500000);
+  
+    
 
     pthread_create(&pthread, NULL, (THREADFUNCPTR)&Rain::Game_Board, arg);
+    start_color();
+    init_color(COLOR_USR1,300,300,300);
+    attrset(A_BOLD);
+    sleep(5);  
+    Print_UI();
 
     while (hp > 0 || BOSS_HP !=0) {
-
-        if (score == 0 && MODE == START_MODE) {
-            clear();
-            sleep(5);
-            Print_UI();
-        }
-
+  
+       
         enter_num = 0;
         for (enter_num = 0; enter_num < 30;) {
             input = getch();
@@ -97,23 +96,20 @@ void Rain::Game_Start() {
     pthread_join(pthread, NULL);
     Blank_OutputWord();
     refresh();
-    endwin();
     clear();
-    exit(0);
+    endwin();
+    return;
 }
 //A_BLINK || A_ITALIC || A_BOLD
 
 void Rain::Print_UI()
 {
-    start_color();
-    short COLOR_USR1;
-    init_color(COLOR_USR1,300,300,300);
     init_pair(1,COLOR_RED,COLOR_BLACK);
     init_pair(2,COLOR_GREEN,COLOR_BLACK);//스코어 색상
     init_pair(3,COLOR_WHITE,COLOR_BLACK);//엔터 + 스테이지 색상
     init_pair(4,COLOR_WHITE,COLOR_BLACK);//단어 색상
     // score print
-    attrset(A_BOLD);
+    
     move(1, 0);
     addstr("score: ");
 
@@ -257,6 +253,7 @@ void *Rain::Game_Board(void *) {
         {
             WordList.clear();
             GameComplete();
+            clear();
             pthread_exit(NULL);
         }
 

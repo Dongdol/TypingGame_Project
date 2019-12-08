@@ -3,7 +3,11 @@
 #include "menu.h"
 
 int main() {
-    Menu menu;
-    menu.mainmenu();
-    menu.help();
+    while(1)
+    {
+        
+        Menu menu;   
+        if(menu.mainmenu()== 0)
+            return 0;
+    }
 }

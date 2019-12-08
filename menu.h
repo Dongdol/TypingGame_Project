@@ -7,7 +7,7 @@ class Menu {
   public:
     int choice;
     void help();
-    void mainmenu();
+    short mainmenu();
 };
 
 #endif
