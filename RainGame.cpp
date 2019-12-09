@@ -195,13 +195,14 @@ void Rain::FindWords(char *str) {
              attron(COLOR_PAIR(2));
              addstr(score_Bar);
              refresh();
-              attroff(COLOR_PAIR(2));
+            attroff(COLOR_PAIR(2));
              return;
         }
     }
 }
 
 void *Rain::Game_Board(void *) {
+    int  count = 0;
     while (hp > 0) {
         if(score==0 && MODE == START_MODE){
             SCORE_TYPE = STAGE1_SCORE;
@@ -261,21 +262,26 @@ void *Rain::Game_Board(void *) {
         CreateList();
         Blank_OutputWord();
         //문자열 출력
+            
         for (Iter = WordList.begin(); Iter != WordList.end(); ++Iter) {
             // row가 19이하일 때만 출력한다
+            
             if ((**Iter).row <21)
             {
                 attron( COLOR_PAIR(4) );
                 Draw((**Iter).row, (**Iter).col, (**Iter).str);
-                 attroff(COLOR_PAIR(4));
+                attroff(COLOR_PAIR(4));
             }
+            
+            
 
-            if ((**Iter).row > 22) {
+            if ((**Iter).row >22  ) {
+                 
                 pthread_mutex_lock(&lock);
-                hp--;
+                --hp;
                 if(hp ==0)
                 {
-                    GameOver();
+                    GameOver(); 
                     sleep(5);
                     endwin();
                     pthread_exit(NULL);
@@ -354,18 +360,18 @@ void Rain::CreateList() {
 
 char* Rain::Return_Str() {
     srand((int)time(NULL));
-    int index = rand() % 13+1;
+    int index = rand() % 31;
 
     switch(MODE)
     {
         case STAGE1_MODE:
-            return STAGE1[index];
+            return STAGE1[index%21];
         case STAGE2_MODE:
             return STAGE2[index];
         case STAGE3_MODE:
             return STAGE3[index];
         case BOSS_MODE:
-            return BOSS[index%7];
+            return BOSS[index%14];
     }
 
 }
