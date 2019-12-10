@@ -20,7 +20,7 @@ void Game::Print_Result()
     cout << "정확도: " << accuarcy <<"%"<<endl;
 
 
-
+/*
     //added func started
 
 
@@ -279,7 +279,7 @@ void move_right_one(UserScore** arr, int ind, int curIndex) {
 
 // added func finished
 
-
+*/
 
 char getch()		//getch() 함수 구현
 {
