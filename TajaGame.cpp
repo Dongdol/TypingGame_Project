@@ -271,7 +271,7 @@ int Game::basicgame()
 	
         fgets(put_String_H, 100, stdin);
         Remove_Enter(put_String_H, strlen(put_String_H));
-        err_typenum += Return_ErrTypeNum(Buf_H, put_String_H, strlen(Buf_H));
+        err_typenum += Return_ErrTypeNum(Buf_H, put_String_H, strlen(Buf_H))/3;  //바이트 수만큼 나눠줘야 오타수 오류x
         cout<<"오타수:"<<err_typenum<<endl;
         fflush(stdout);
              }
