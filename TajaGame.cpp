@@ -182,6 +182,8 @@ int Game::basicgame()
         fflush(stdout);
              }
     }
+	
+	
     else if(select == SELECT_HANGUL)
     {
         while (1) {
@@ -202,42 +204,68 @@ int Game::basicgame()
         cout << Buf_H << endl; // txt 파일 문자열 출력
         printf("%c[0m",27);
 	
+
+	
 	for(int i = 0; put_String_H[i] != '\n'; i++){
 
 
         put_String_H[i] = getch();
-
-        if(put_String_H[i] == 127 || put_String_H[i] == 8) {
-        printf("\b");
-        fputs(" ",stdout);
-        printf("\b");
-        i--;
-        i--;
+	if(put_String_H[i] == 32){
+	printf(" ");
+	continue;
+	}
+	else if(put_String_H[i] == 127 || put_String_H[i] == 8) {
+                if(put_String_H[i-1] == 32){
+                        printf("\b");
+                        fputs(" ",stdout);
+                        printf("\b");
+                        i-=2;
+              		continue;
+		  }
         }
-        else if(put_String_H[i] == '\n')
+	else if(put_String_H[i] == '\n')
                 break;
-        else if(put_String_H[i] == '\b')
-                printf("ok");
-        else
-        {
-         if(put_String_H[i] == Buf_H[i]){
+
+	put_String_H[i+1] = getch();
+	put_String_H[i+2] = getch();
+	fflush(stdin);
+	fflush(stdout);
+	if(put_String_H[i] == 127 || put_String_H[i] == 8) {
+				
+		printf("\b");
+		fputs(" ",stdout);
+		printf("\b");
+		printf("\b");	
+		printf("\b");
+		printf("\b");
+		i-=4;		
+
+	}
+	
+	
+	
+         if(put_String_H[i] == Buf_H[i] && put_String_H[i+1] == Buf_H[i+1] && put_String_H[i+2] == Buf_H[i+2]){
                         printf("%c[32m",27);
-                        printf("%c",put_String_H[i]);
-                        printf("%c[0m",27);
+                        printf("%c%c%c",put_String_H[i],put_String_H[i+1],put_String_H[i+2]);    
+			printf("%c[0m",27);
+			
+
                 }
-                else if(put_String_H[i] != Buf_H[i]){
+                else{
                         printf("%c[31m",27);
-                        printf("%c",put_String_H[i]);
+                        printf("%c%c%c",put_String_H[i],put_String_H[i+1],put_String_H[i+2]);
                         printf("%c[0m",27);
-                }
+                        
+   	}
+		i+=2;
 
+	
+	
+ 
+	fflush(stdin);
+	}
 
-        }
-
-
-        fflush(stdout);
-
-}
+        
 
 
 	
