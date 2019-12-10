@@ -1,29 +1,6 @@
 #include "TajaGame.h"
 
 
-void Game::Print_Result()
-
-{
-
-
-
-    cout<<total_typenum<<endl;
-
-    cout<<fixed;
-
-    cout.precision(1);
-
-    cout << "타자 치는데 걸린 Time: " << type_during_Time << "초" << endl;
-
-    cout << "평균타수: " << ((float)total_typenum / type_during_Time) * 60 <<endl;
-
-    cout << "정확도: " << accuarcy <<"%"<<endl;
-
-
-
-}
-
-
 char getch()		//getch() 함수 구현
 {
     char c;
@@ -51,16 +28,7 @@ void Game::Print_Result()
     cout.precision(1);
     cout << "타자 치는데 걸린 Time: " << type_during_Time << "초" << endl;
     cout << "평균타수: " << ((float)total_typenum / type_during_Time) * 60 <<endl;
-    cout << "정확도: " << accuarcy <<"%"<<endl;
-
-    err_typenum =0;
-    total_typenum =0;
-    accuarcy =0.0;
-    while(Text_Mode.size() !=0)
-         Text_Mode.pop_back();
-         cout<<"dongdol"<<endl;
-    sleep(3);
- 
+    cout << "정확도: " << accuarcy <<"%"<<endl; 
 }
 
 void Game::Remove_Enter(char put_String[], int len)
