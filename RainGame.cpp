@@ -17,16 +17,15 @@ void Rain::Game_Start() {
     Print_UI();
 
     while (hp > 0 || BOSS_HP !=0) {
-        if (hp == 0) {
-            GameOver();
-            sleep(5);
-            endwin();
-            pthread_exit(NULL);
 
-        }
         enter_num = 0;
         for (enter_num = 0; enter_num < 30;) {
-
+            if (hp == 0) {
+                pthread_exit(NULL);
+            }
+            if(BOSS_HP==0){
+                pthread_exit(NULL);
+            }
             input = getch();
 
             if (input == '\n') { //개행 입력 받았을 때
@@ -58,7 +57,6 @@ void Rain::Game_Start() {
                     addstr("                      "); // enter하는 곳 비우기
                     move(22, 36);
                 }
-
             } else { //문자 입력할 때
                    attron(COLOR_PAIR(3));
                 enter[enter_num++] = input;
@@ -71,19 +69,19 @@ void Rain::Game_Start() {
            refresh();
         }
 
-        if(score==100 && MODE == STAGE1_MODE) // 2단계
+        if(score==10 && MODE == STAGE1_MODE) // 2단계
         {
             clear();
             sleep(6);
             Print_UI();
         }
-        else if(score == 120 && MODE == STAGE2_MODE) // 3단계
+        else if(score == 30 && MODE == STAGE2_MODE) // 3단계
         {
             sleep(6);
             Print_UI();
         }
 
-        else if(score == 150 && STAGE3_MODE) // 보스
+        else if(score == 60 && STAGE3_MODE) // 보스
         {
             sleep(6);
             Print_UI();
@@ -207,7 +205,7 @@ void *Rain::Game_Board(void *) {
             clear();
             StageChange();
         }
-        else if(score==100 && MODE == STAGE1_MODE) // 2단계
+        else if(score==10 && MODE == STAGE1_MODE) // 2단계
         {
             SCORE_TYPE = STAGE2_SCORE;
             MODE = STAGE2_MODE;
@@ -220,7 +218,7 @@ void *Rain::Game_Board(void *) {
 
         }
         //단어 입력시 스코어 30으로 변경후 스테이지 변경
-        else if(score ==120 && MODE == STAGE2_MODE) // 3단계
+        else if(score ==30 && MODE == STAGE2_MODE) // 3단계
         {
             SCORE_TYPE = STAGE3_SCORE;
             MODE = STAGE3_MODE;
@@ -231,7 +229,7 @@ void *Rain::Game_Board(void *) {
             clear();
             StageChange();
         }
-        else if(score == 150  && MODE == STAGE3_MODE ) // 보스
+        else if(score == 60  && MODE == STAGE3_MODE ) // 보스
         {
             SCORE_TYPE = BOSS_SCORE;
             MODE = BOSS_MODE;
@@ -245,9 +243,8 @@ void *Rain::Game_Board(void *) {
         //보스 HP =0이면 게임을 종료한다
         else if(BOSS_HP ==0 && MODE == BOSS_MODE)
         {
-            WordList.clear();
+           // WordList.clear();
             GameComplete();
-            clear();
             pthread_exit(NULL);
         }
 
@@ -269,10 +266,12 @@ void *Rain::Game_Board(void *) {
 
                 pthread_mutex_lock(&lock);
                 hp--;
-
                 WordList.pop_front();
                 pthread_mutex_unlock(&lock);
-
+                if (hp == 0) {
+                    GameOver();
+                    pthread_exit(NULL);
+                }
                 move(0, 0);
                 addstr("                      ");
                 move(0, 0);
@@ -338,7 +337,7 @@ void Rain::CreateList() {
     WordList.push_back(word);
     if(MODE == BOSS_MODE)
     usleep(600000);
-    usleep(200000); //2000000
+    usleep(2000000); //2000000
     Down_Words();
 }
 
@@ -375,31 +374,24 @@ void Rain::GameComplete() {
     Draw(10, 8, "   V   V    I   C       T   O   O  RRRR     Y     !! !!  ");
     Draw(11, 8, "    V V     I   C   C   T   O   O  R  R     Y            ");
     Draw(12, 8, "     V     III   CCC    T    OOO   R   R    Y     !! !!  ");
+    Draw(21, 23, "To Restart, Press the [ENTER]");
     refresh();
     sleep(5);
     clear();
     endwin();
-    exit(-1);
+
+    system("./Prototype.exe"); //프로그램 재시작
 }
 
 void Rain::GameOver() {
     clear();
     Blank_OutputWord();
-    Draw(8, 2,
-         "    GGG       A       M   M    EEEEE   OOO   V     V EEEEE  RRRR     "
-         "   ");
-    Draw(9, 2,
-         "   G         A A     M M M M   E      O   O  V     V E      R   R    "
-         "   ");
-    Draw(10, 2,
-         "  G   GGG   A   A   M   M   M  EEEEE  O   O   V   V  EEEEE  RRRR     "
-         "  ");
-    Draw(11, 2,
-         "   G   G   A AAA A  M       M  E      O   O    V V   E      R  R     "
-         "  ");
-    Draw(12, 2,
-         "    GGG   A       A M       M  EEEEE   OOO      V    EEEEE  R   R "
-         ".....");
+    Draw(8, 2, "    GGG       A       M   M    EEEEE   OOO   V     V EEEEE  RRRR       ");
+    Draw(9, 2, "   G         A A     M M M M   E      O   O  V     V E      R   R      ");
+    Draw(10, 2,"  G   GGG   A   A   M   M   M  EEEEE  O   O   V   V  EEEEE  RRRR       ");
+    Draw(11, 2,"   G   G   A AAA A  M       M  E      O   O    V V   E      R  R       ");
+    Draw(12, 2,"    GGG   A       A M       M  EEEEE   OOO      V    EEEEE  R   R .....");
+    Draw(21, 23, "To Restart, Press the [ENTER]");
     refresh();
     sleep(5);
     clear();
