@@ -29,7 +29,7 @@ using namespace std;
 #define   BOSS_SCORE 50
 
 //Fruit
-static char* STAGE1[] = {"Banana","Mango","Apple","Watermelon","Orange","Strawberry","Durian","Grape","Citrus","Mangosteen","Plum","Peach","Pineapple","Coconnut","Sugarcane","Blueberry","Pear","flg","Persimmon","Pomegranate"};
+static char* STAGE1[] = {"Banana","Mango","Apple","Watermelon","Orange","Strawberry","Durian","Grape","Citrus","Mangosteen","Plum","Peach","Pineapple","Coconnut","Sugarcane","Blueberry","Pear","Persimmon","Pomegranate"};
 //Music
 static char* STAGE2[] = {"You And I", "Reality", "Workerholic", "Blueming", "Mirotic","Yes or Yes", "Heartshaker", "IDOL","Travel","Good Day","Attention","All falls down","Despacito","Shape of you","DINOSAUR","UmpahUmpah"
  ,"Viva La Vida","What the hell","Alone","2002","Lost Stars","Love$ick","7rings","Speechless","Handclap","We all lie","The Ocean","Move Like Jagger","Reminiscence","HymnForTheWeekend" };
@@ -39,7 +39,7 @@ static char* STAGE3[] = {"Mathemtics","Physics", "Quantum Mechanics","Apparel st
 ,"literature","Psychology","Korean Medicine","Earth science","Pedagogy Education","Astronomy","Medicine","Architecture","Biology","Archaeology",
 "Mechanical engineering","Dentistry","Sociology","Humanities","Natural science"};
 
-static char* BOSS[] ={"Infix to Postfix", "1 4+ 5 4 + + 2 /", "pthread_exit()","depth_first_search","Message Queue",
+static char* BOSS[] ={"Infix to Postfix", "pthread_exit()","depth_first_search","Message Queue",
 "iterator begin()", "void signalHandler()","Semaphore","Symbolic Link","std::stack<int>","int mkfifo()","sigpromask()",
 "DIR* opendir()"};
 static int SCORE_TYPE=STAGE1_SCORE;

@@ -69,19 +69,19 @@ void Rain::Game_Start() {
            refresh();
         }
 
-        if(score==10 && MODE == STAGE1_MODE) // 2단계
+        if(score==20 && MODE == STAGE1_MODE) // 2단계
         {
             clear();
             sleep(6);
             Print_UI();
         }
-        else if(score == 30 && MODE == STAGE2_MODE) // 3단계
+        else if(score == 40 && MODE == STAGE2_MODE) // 3단계
         {
             sleep(6);
             Print_UI();
         }
 
-        else if(score == 60 && STAGE3_MODE) // 보스
+        else if(score == 70 && STAGE3_MODE) // 보스
         {
             sleep(6);
             Print_UI();
@@ -205,7 +205,7 @@ void *Rain::Game_Board(void *) {
             clear();
             StageChange();
         }
-        else if(score==10 && MODE == STAGE1_MODE) // 2단계
+        else if(score==20 && MODE == STAGE1_MODE) // 2단계
         {
             SCORE_TYPE = STAGE2_SCORE;
             MODE = STAGE2_MODE;
@@ -218,7 +218,7 @@ void *Rain::Game_Board(void *) {
 
         }
         //단어 입력시 스코어 30으로 변경후 스테이지 변경
-        else if(score ==30 && MODE == STAGE2_MODE) // 3단계
+        else if(score ==40 && MODE == STAGE2_MODE) // 3단계
         {
             SCORE_TYPE = STAGE3_SCORE;
             MODE = STAGE3_MODE;
@@ -229,7 +229,7 @@ void *Rain::Game_Board(void *) {
             clear();
             StageChange();
         }
-        else if(score == 60  && MODE == STAGE3_MODE ) // 보스
+        else if(score == 70  && MODE == STAGE3_MODE ) // 보스
         {
             SCORE_TYPE = BOSS_SCORE;
             MODE = BOSS_MODE;
