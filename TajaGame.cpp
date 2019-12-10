@@ -1,6 +1,286 @@
 #include "TajaGame.h"
 
-			
+
+void Game::Print_Result()
+
+{
+
+
+
+    cout<<total_typenum<<endl;
+
+    cout<<fixed;
+
+    cout.precision(1);
+
+    cout << "타자 치는데 걸린 Time: " << type_during_Time << "초" << endl;
+
+    cout << "평균타수: " << ((float)total_typenum / type_during_Time) * 60 <<endl;
+
+    cout << "정확도: " << accuarcy <<"%"<<endl;
+
+
+
+    //added func started
+
+
+
+    UserScore *user=new UserScore;
+
+    user->spd=(float)total_typenum / type_during_Time*60;
+
+    user->accuracy=accuarcy;
+
+    strcpy(user->text, this->curText);
+
+    strcpy(user->name, this->userName);
+
+    fd=open(SCOREFILE, O_CREAT | O_WRONLY | O_APPEND, 0644);
+
+    if(fd==-1) {
+
+            perror("open() error!");
+
+            exit(-1);
+
+    }
+
+
+
+    w_Size=write(fd, (UserScore*)user, sizeof(UserScore));
+
+    if(w_Size==-1) {
+
+            perror("write() error!");
+
+            exit(-2);
+
+    }
+
+
+
+    close(fd);
+
+
+
+    //added func finished
+
+
+
+    err_typenum =0;
+
+    total_typenum =0;
+
+    accuarcy =0.0;
+
+    /*
+
+    while(Text_Mode.size() !=0)
+
+         Text_Mode.pop_back();
+
+         cout<<"dongdol"<<endl;
+
+*/    sleep(3);
+
+}
+
+
+
+// added func started
+
+void readScore() {
+
+        int rank=1;
+
+        int index=0;
+
+        char key;
+
+        bool isHigher=false;
+
+
+
+        system("clear");        // clear moniter
+
+
+
+        cout << "<Records>" << endl << endl;
+
+        cout << "Rank\t\t";
+
+        cout << "Name\t\t";
+
+        cout << "File\t\t";
+
+        cout << "Speed\t\t";
+
+        cout << "Accuracy\t\t" << endl; //UI
+
+
+
+        fd=open(SCOREFILE, O_CREAT | O_RDONLY, 0644);
+
+        if(fd==-1) {
+
+                perror("open() error!");
+
+                exit(-1);
+
+        }
+
+
+
+        UserScore *user=new UserScore;
+
+
+
+        UserScore *user_arr[10];
+
+  r_Size=1;
+
+
+
+        while(1) {
+
+                memset(user, '\0', sizeof(UserScore));
+
+
+
+                r_Size=read(fd, (UserScore*)user, sizeof(UserScore));
+
+                if(r_Size==-1) {
+
+                        perror("read() error!");
+
+                        exit(-2);
+
+                }       // if an error occurred, exit
+
+
+
+                if(r_Size==0)           // no more to read left
+
+                        break;
+
+/*
+
+                if(index==0)    // if there is no node at array, push it
+
+                        user_arr[index++]=user;
+
+                else {
+
+                        for(int i=0; i<index; i++) {
+
+                                cout << user->spd << ", " << user_arr[i]->spd <<endl;
+
+                                if(user->spd > user_arr[i]->spd)
+
+                                        isHigher=true;
+
+
+
+                                if(isHigher) {
+
+                                        move_right_one(user_arr, i, index);
+
+                                        user_arr[i]=user;
+
+                                        isHigher=false;
+
+                                        if(index<10)
+
+                                                index++;
+
+                                        break;
+
+                                }
+
+                        }
+
+                        if(index<10) {
+
+                                user_arr[index]=user;
+
+                                if(index != 9)
+
+                                        index++;
+
+                        }
+
+                }
+
+*/
+
+
+
+                cout << rank << "\t\t";
+
+                cout << user->name << "\t\t";
+
+                cout << user->text << "\t\t";
+
+                cout << user->spd << "\t\t";
+
+                cout << user->accuracy << "\t\t";
+
+                cout << endl;
+
+                rank++;
+
+        }
+
+
+
+        close(fd);
+
+        delete user;
+
+
+
+        cout << "Press any key if you want to go back to main" << endl;
+
+        cin >> key;
+
+}
+
+
+
+void move_right_one(UserScore** arr, int ind, int curIndex) {
+
+        UserScore *new_arr[10];
+
+        if(curIndex==9) {
+
+                for(int i=ind+1; i<10; i++)
+
+                        new_arr[i]=arr[i-1];
+
+                for(int i=ind+1; i<10; i++)
+
+                        arr[i]=new_arr[i];
+
+        }
+
+        else {
+
+                for(int i=ind+1; i<curIndex+1; i++)
+
+                        new_arr[i]=arr[i-1];
+
+                for(int i=ind+1; i<curIndex+1; i++)
+
+                        arr[i]=new_arr[i];
+
+        }
+
+}
+
+// added func finished
+
+
+
 char getch()		//getch() 함수 구현
 {
     char c;
@@ -16,6 +296,9 @@ char getch()		//getch() 함수 구현
     tcsetattr(STDIN_FILENO, TCSANOW, &oldattr);
     return c;
 }
+
+
+
 
 void Game::Print_Result()
 {
