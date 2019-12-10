@@ -46,6 +46,7 @@ short Menu::mainmenu()
             break;
         case 3:
 	    int key;
+	    char tok;
             cout << "Select the game you want to see \n"; // taja, rain
             cout << "1. Tajagame        2. Rain" << endl;
             cout << "Select: ";
@@ -53,10 +54,12 @@ short Menu::mainmenu()
 
             switch(key) {
             case 1:
-              //  readScore();
+                readScore();
                 break;
             case 2:
-                readRainScore();
+		cout << score << endl;
+		cin >> tok;
+              //  readRainScore();
                 break;
             case 3:
                 break;

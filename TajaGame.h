@@ -42,6 +42,8 @@ using namespace std;
 
 #define SELECT_HANGUL 2
 
+#define SCOREFILE "./userscore.dat"     // added
+
 class Game {
 
 
@@ -82,6 +84,9 @@ class Game {
 
     list<string>::iterator iter;
 
+    char curText[10];
+
+    char userName[10];
 
 
   public:
@@ -101,5 +106,22 @@ class Game {
 };
 
 
+// added part started
+
+static int fd;
+static int w_Size;
+static int r_Size;
+
+typedef struct UserScore {
+        char name[10];
+        double spd;
+        double accuracy;
+        char text[10];
+} UserScore;
+
+void readScore();
+void move_right_one(UserScore** arr, int ind, int curIndex);
+
+// added part finished
 
 #endif
