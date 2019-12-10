@@ -48,7 +48,7 @@ short Menu::mainmenu()
 	    int key;
 	    char tok;
             cout << "Select the game you want to see \n"; // taja, rain
-            cout << "1. Tajagame        2. Rain" << endl;
+            cout << "1. Tajagame" << endl;
             cout << "Select: ";
             cin >> key;
 
@@ -93,8 +93,8 @@ void Menu::help()
     cout << "특정 점수를 만족하면 다음 레벨로 진행됩니다. 영어로 진행됩니다."
          << endl<<endl;
     cout << "1레벨(과일)    100점 충족시 2레벨 진입" << endl<<endl;
-    cout << "2레벨(노래 제목)   180점 충족시 3레벨 진입" << endl<<endl;
-    cout << "3레벨(학문)    250점 충족시 BOSS레벨 진입" << endl<<endl;
+    cout << "2레벨(노래 제목)   150 충족시 3레벨 진입" << endl<<endl;
+    cout << "3레벨(학문)    300 충족시 BOSS레벨 진입" << endl<<endl;
     cout << "BOSS    BOSS HP를 0으로 만들면 게임 클리어" << endl
          << endl
          << endl;
