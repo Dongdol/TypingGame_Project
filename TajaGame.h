@@ -11,6 +11,9 @@
 #include <unistd.h>
 #include <string>
 #include <list>
+#include <termios.h>
+#include <stdio.h>
+
 
 using namespace std;
 
