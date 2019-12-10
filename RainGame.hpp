@@ -1,21 +1,19 @@
 #ifndef __TEST_H__
 #define __TEST_H__
 
+#include <curses.h>
+#include <iostream>
+#include <list>
+#include <pthread.h>
+#include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <fcntl.h>
-#include <sys/time.h>
-#include <curses.h>
 #include <string.h>
 #include <string>
-#include <signal.h>
-#include <unistd.h>
+#include <sys/time.h>
 #include <time.h>
-#include <pthread.h>
-#include <iostream>
-#include <string>
+#include <unistd.h>
 #include <vector>
-#include <list>
 using namespace std;
 
 #define STAGE1_WORD_DOWN_TIME 5
@@ -28,29 +26,67 @@ using namespace std;
 #define STAGE1_SCORE 10
 #define STAGE2_SCORE 20
 #define STAGE3_SCORE 30
-#define   BOSS_SCORE 50
-#define rainScoreFile "./rainscore.dat"
+#define BOSS_SCORE 50
 
-//Fruit
-static char* STAGE1[] = {"Banana","Mango","Apple","Watermelon","Orange","Strawberry","Durian","Grape","Citrus","Mangosteen","Plum","Peach","Pineapple","Coconnut","Sugarcane","Blueberry","Pear","Persimmon","Pomegranate"};
-//Music
-static char* STAGE2[] = {"You And I", "Reality", "Workerholic", "Blueming", "Mirotic","Yes or Yes", "Heartshaker", "IDOL","Travel","Good Day","Attention","All falls down","Despacito","Shape of you","DINOSAUR","UmpahUmpah"
- ,"Viva La Vida","What the hell","Alone","2002","Lost Stars","Love$ick","7rings","Speechless","Handclap","We all lie","The Ocean","Move Like Jagger","Reminiscence","HymnForTheWeekend" };
-//Discipline
-static char* STAGE3[] = {"Mathemtics","Physics", "Quantum Mechanics","Apparel study","Religious studies","Food and Nutrition",
-"Quantum Physics","Linguistics","Material engineering", "Chemistry", "Science of law", "Computer Science","Philosophy","Economics","Urban engineering"
-,"literature","Psychology","Korean Medicine","Earth science","Pedagogy Education","Astronomy","Medicine","Architecture","Biology","Archaeology",
-"Mechanical engineering","Dentistry","Sociology","Humanities","Natural science"};
+// Fruit
+static char *STAGE1[] = {"Banana",    "Mango",      "Apple",      "Watermelon",
+                         "Orange",    "Strawberry", "Durian",     "Grape",
+                         "Citrus",    "Mangosteen", "Plum",       "Peach",
+                         "Pineapple", "Coconnut",   "Sugarcane",  "Blueberry",
+                         "Pear",      "Persimmon",  "Pomegranate"};
+// Music
+static char *STAGE2[] = {
+    "You And I",    "Reality",          "Workerholic", "Blueming",
+    "Mirotic",      "Yes or Yes",       "Heartshaker", "IDOL",
+    "Travel",       "Good Day",         "Attention",   "All falls down",
+    "Despacito",    "Shape of you",     "DINOSAUR",    "UmpahUmpah",
+    "Viva La Vida", "What the hell",    "Alone",       "2002",
+    "Lost Stars",   "Love$ick",         "7rings",      "Speechless",
+    "Handclap",     "We all lie",       "The Ocean",   "Move Like Jagger",
+    "Reminiscence", "HymnForTheWeekend"};
+// Discipline
+static char *STAGE3[] = {"Mathemtics",
+                         "Physics",
+                         "Quantum Mechanics",
+                         "Apparel study",
+                         "Religious studies",
+                         "Food and Nutrition",
+                         "Quantum Physics",
+                         "Linguistics",
+                         "Material engineering",
+                         "Chemistry",
+                         "Science of law",
+                         "Computer Science",
+                         "Philosophy",
+                         "Economics",
+                         "Urban engineering",
+                         "literature",
+                         "Psychology",
+                         "Korean Medicine",
+                         "Earth science",
+                         "Pedagogy Education",
+                         "Astronomy",
+                         "Medicine",
+                         "Architecture",
+                         "Biology",
+                         "Archaeology",
+                         "Mechanical engineering",
+                         "Dentistry",
+                         "Sociology",
+                         "Humanities",
+                         "Natural science"};
 
-static char* BOSS[] ={"Infix to Postfix", "pthread_exit()","depth_first_search","Message Queue",
-"iterator begin()", "void signalHandler()","Semaphore","Symbolic Link","std::stack<int>","int mkfifo()","sigpromask()",
-"DIR* opendir()"};
-static int SCORE_TYPE=STAGE1_SCORE;
-static int MODE=START_MODE;
-static int score=0;
-static int hp=10;
+static char *BOSS[] = {
+    "Infix to Postfix", "pthread_exit()",   "depth_first_search",
+    "Message Queue",    "iterator begin()", "void signalHandler()",
+    "Semaphore",        "Symbolic Link",    "std::stack<int>",
+    "int mkfifo()",     "sigpromask()",     "DIR* opendir()"};
+static int SCORE_TYPE = STAGE1_SCORE;
+static int MODE = START_MODE;
+static int score = 0;
+static int hp = 10;
 static char stageName[10];
-static int BOSS_HP=5;
+static int BOSS_HP = 5;
 static char BOSS_HP_BAR[10];
 static int enter_num;
 static char hp_Bar[10];
@@ -59,66 +95,39 @@ static char enter_Bar[20] = "	| Enter | : ";
 static int input;
 static pthread_mutex_t lock;
 
-typedef struct WordNode* WordNodePointer;
-typedef struct WordNode
-{
+typedef struct WordNode *WordNodePointer;
+typedef struct WordNode {
     int row, col;
     char str[WORD_MAX];
     WordNodePointer up, down;
 
-}WordNode;
+} WordNode;
 
-
-
-
-class Rain
-{
-    private:
-
-
-    public:
-      pthread_t pthread = 0;
-      void GameComplete();
-      void StageChange();
-      void Print_UI();
-      void FindWords(char* str);
-      void *Game_Board(void *);
-      void Game_Start();
-      void Draw(int row, int col, char *str);
-      void Print_Words();
-      char **Get_Words();
-      void Down_Words();
-      WordNodePointer Initnode(void);
-      WordNodePointer CreateWord(char *str);
-      void CreateList();
-      void GameOver();
-      char *Return_Str();
-      char enter[30] = {0};
-
+class Rain {
+  private:
+  public:
+    pthread_t pthread = 0;
+    void GameComplete();
+    void StageChange();
+    void Print_UI();
+    void FindWords(char *str);
+    void *Game_Board(void *);
+    void Game_Start();
+    void Draw(int row, int col, char *str);
+    void Print_Words();
+    char **Get_Words();
+    void Down_Words();
+    WordNodePointer Initnode(void);
+    WordNodePointer CreateWord(char *str);
+    void CreateList();
+    void GameOver();
+    char *Return_Str();
+    char enter[30] = {0};
 };
 typedef void *(*THREADFUNCPTR)(void *);
 
-
-
-char* Return_Str();
+char *Return_Str();
 void Blank_OutputWord();
 void Blank_OutputWord_All();
-
-
-
-
-// added struct start
-
-static int wSize;
-static int rSize;
-typedef struct RainScore {
-        char userName[10];
-        int stage;
-        int score;
-} RainScore;
-
-void readRainScore();
-// added struct finished
-
 
 #endif

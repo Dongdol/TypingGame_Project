@@ -112,15 +112,17 @@ void readScore() {
                 cout << user->text << "\t\t";
                 cout << user->spd << "\t\t";
                 cout << user->accuracy << "\t\t";
-                cout << endl;
+                cout << endl<<endl<<endl;
                 rank++;
         }
 
         close(fd);
         delete user;
 
-        cout << "Press any key if you want to go back to main" << endl;
-        cin >> key;
+        cout << "잠시후 메뉴 화면으로 전환됩니다." << endl;
+
+        sleep(7);
+        while (!cin.get());
 }
 
 void move_right_one(UserScore** arr, int ind, int curIndex) {
