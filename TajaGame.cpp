@@ -505,6 +505,14 @@ int Game::basicgame()
                         i-=2;
               		continue;
 		  }
+		else{
+		printf("\b");
+		printf("\b");
+		fputs(" ",stdout);
+		printf("\b");
+		i-=4;	
+		continue;
+		}
         }
 	else if(put_String_H[i] == '\n')
                 break;
@@ -513,17 +521,7 @@ int Game::basicgame()
 	put_String_H[i+2] = getch();
 	fflush(stdin);
 	fflush(stdout);
-	if(put_String_H[i] == 127 || put_String_H[i] == 8) {
-				
-		printf("\b");
-		fputs(" ",stdout);
-		printf("\b");
-		printf("\b");	
-		printf("\b");
-		printf("\b");
-		i-=4;		
-
-	}
+	
 	
 	
 	
