@@ -3,9 +3,11 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <fcntl.h>
 #include <sys/time.h>
 #include <curses.h>
 #include <string.h>
+#include <string>
 #include <signal.h>
 #include <unistd.h>
 #include <time.h>
@@ -27,6 +29,7 @@ using namespace std;
 #define STAGE2_SCORE 20
 #define STAGE3_SCORE 30
 #define   BOSS_SCORE 50
+#define rainScoreFile "./rainscore.dat"
 
 //Fruit
 static char* STAGE1[] = {"Banana","Mango","Apple","Watermelon","Orange","Strawberry","Durian","Grape","Citrus","Mangosteen","Plum","Peach","Pineapple","Coconnut","Sugarcane","Blueberry","Pear","Persimmon","Pomegranate"};
@@ -103,6 +106,19 @@ void Blank_OutputWord_All();
 
 
 
+
+// added struct start
+
+static int wSize;
+static int rSize;
+typedef struct RainScore {
+        char userName[10];
+        int stage;
+        int score;
+} RainScore;
+
+void readRainScore();
+// added struct finished
 
 
 #endif
