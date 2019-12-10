@@ -45,9 +45,9 @@ static char* BOSS[] ={"Infix to Postfix", "pthread_exit()","depth_first_search",
 static int SCORE_TYPE=STAGE1_SCORE;
 static int MODE=START_MODE;
 static int score=0;
-static int hp=1;
+static int hp=10;
 static char stageName[10];
-static int BOSS_HP=3;
+static int BOSS_HP=5;
 static char BOSS_HP_BAR[10];
 static int enter_num;
 static char hp_Bar[10];

@@ -69,19 +69,19 @@ void Rain::Game_Start() {
            refresh();
         }
 
-        if(score==20 && MODE == STAGE1_MODE) // 2단계
+        if(score==50 && MODE == STAGE1_MODE) // 2단계
         {
             clear();
             sleep(6);
             Print_UI();
         }
-        else if(score == 40 && MODE == STAGE2_MODE) // 3단계
+        else if(score == 150 && MODE == STAGE2_MODE) // 3단계
         {
             sleep(6);
             Print_UI();
         }
 
-        else if(score == 70 && STAGE3_MODE) // 보스
+        else if(score == 270 && STAGE3_MODE) // 보스
         {
             sleep(6);
             Print_UI();
@@ -205,7 +205,7 @@ void *Rain::Game_Board(void *) {
             clear();
             StageChange();
         }
-        else if(score==20 && MODE == STAGE1_MODE) // 2단계
+        else if(score==50 && MODE == STAGE1_MODE) // 2단계
         {
             SCORE_TYPE = STAGE2_SCORE;
             MODE = STAGE2_MODE;
@@ -215,10 +215,9 @@ void *Rain::Game_Board(void *) {
             Blank_OutputWord();
             clear();
             StageChange();
-
         }
         //단어 입력시 스코어 30으로 변경후 스테이지 변경
-        else if(score ==40 && MODE == STAGE2_MODE) // 3단계
+        else if(score ==150 && MODE == STAGE2_MODE) // 3단계
         {
             SCORE_TYPE = STAGE3_SCORE;
             MODE = STAGE3_MODE;
@@ -229,7 +228,7 @@ void *Rain::Game_Board(void *) {
             clear();
             StageChange();
         }
-        else if(score == 70  && MODE == STAGE3_MODE ) // 보스
+        else if(score == 270 && MODE == STAGE3_MODE ) // 보스
         {
             SCORE_TYPE = BOSS_SCORE;
             MODE = BOSS_MODE;
@@ -253,7 +252,7 @@ void *Rain::Game_Board(void *) {
         //문자열 출력
 
         for (Iter = WordList.begin(); Iter != WordList.end(); ++Iter) {
-            // row가 19이하일 때만 출력한다
+            // row가 21이하일 때만 출력한다
 
             if ((**Iter).row <21)
             {
@@ -261,8 +260,7 @@ void *Rain::Game_Board(void *) {
                 Draw((**Iter).row, (**Iter).col, (**Iter).str);
                 attroff(COLOR_PAIR(4));
             }
-
-            if ((**Iter).row >22  ) {
+            if((**Iter).row >22){
 
                 pthread_mutex_lock(&lock);
                 hp--;
@@ -327,6 +325,7 @@ WordNodePointer Rain::CreateWord(char *str) {
     return word;
 }
 
+
 // List를 만든다 , rand()는 현재 시간을 기반으로 한 함수이기때문에 1초마다
 // 업데이트된다
 void Rain::CreateList() {
@@ -343,18 +342,18 @@ void Rain::CreateList() {
 
 char* Rain::Return_Str() {
     srand((int)time(NULL));
-    int index = rand() % 31;
+    int index = rand() % 30;
 
     switch(MODE)
     {
         case STAGE1_MODE:
-            return STAGE1[index%21];
+            return STAGE1[index%20];
         case STAGE2_MODE:
             return STAGE2[index];
         case STAGE3_MODE:
             return STAGE3[index];
         case BOSS_MODE:
-            return BOSS[index%14];
+            return BOSS[index%13];
     }
 
 }
