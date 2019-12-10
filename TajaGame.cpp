@@ -23,103 +23,29 @@ char getch()		//getch() 함수 구현
 void Game::Print_Result()
 {
 
-    cout<<total_typenum<<endl;
     cout<<fixed;
     cout.precision(1);
+    if(Text_Mode == English){
+    cout << "정확도: " << accuarcy <<"%"<<endl; 
+    cout <<"오타수: "<<err_typenum-2 << endl;
+
+    }
     cout << "타자 치는데 걸린 Time: " << type_during_Time << "초" << endl;
     cout << "평균타수: " << ((float)total_typenum / type_during_Time) * 60 <<endl;
-    cout << "정확도: " << accuarcy <<"%"<<endl;
-
-    //added func started
-
-    UserScore *user=new UserScore;
-    user->spd=(float)total_typenum / type_during_Time*60;
-    user->accuracy=accuarcy;
-    strcpy(user->text, this->curText);
-    strcpy(user->name, this->userName);
-    fd=open(SCOREFILE, O_CREAT | O_WRONLY | O_APPEND, 0644);
-    if(fd==-1) {
-            perror("open() error!");
-            exit(-1);
-    }
-
-    w_Size=write(fd, (UserScore*)user, sizeof(UserScore));
-    if(w_Size==-1) {
-            perror("write() error!");
-            exit(-2);
-    }
-
-    close(fd);
-
-    //added func finished
-
+   
     err_typenum = 0;
     total_typenum = 0;
     accuarcy = 0.0;
-    sleep(3);
+    while(Text_Mode.size() != 0)
+    {   
+        Text_Mode.pop_back(); 
+    }
+	sleep(3);
 }
 
 void Game::Remove_Enter(char put_String[], int len)
 {
     put_String[len - 1] = '\0';
-}
-
-// added func started
-void readScore() {
-        int rank=1;
-        int index=0;
-        char key;
-        bool isHigher=false;
-
-        system("clear");        // clear moniter
-
-        cout << "<Records>" << endl << endl;
-        cout << "Rank\t\t";
-        cout << "Name\t\t";
-        cout << "File\t\t";
-        cout << "Speed\t\t";
-        cout << "Accuracy\t\t" << endl; //UI
-
-        fd=open(SCOREFILE, O_CREAT | O_RDONLY, 0644);
-        if(fd==-1) {
-                perror("open() error!");
-                exit(-1);
-        }
-
-        UserScore *user=new UserScore;
-
-      	UserScore *user_arr[10];
-
-	r_Size=1;
-
-        while(1) {
-                memset(user, '\0', sizeof(UserScore));
-
-                r_Size=read(fd, (UserScore*)user, sizeof(UserScore));
-                if(r_Size==-1) {
-                        perror("read() error!");
-                        exit(-2);
-                }       // if an error occurred, exit
-
-                if(r_Size==0)           // no more to read left
-                        break;
-		cout << rank << "\t\t";
-                cout << user->name << "\t\t";
-                cout << user->text << "\t\t";
-                cout << user->spd << "\t\t";
-                cout << user->accuracy << "\t\t";
-                cout << endl;
-                rank++;
-        }
-
-        close(fd);
-        delete user;
-
-        cout << "잠시후 메뉴 화면으로 전환됩니다." << endl;
-
-        sleep(7);
-        while (!cin.get())
-            ;
 }
 
 
@@ -149,10 +75,8 @@ char* Game::Print_TextList(int select)
         scanf("%s", SelectedFile);
         for(iter = Text_Mode.begin(); iter != Text_Mode.end(); ++iter)
         {
-            if(iter->compare(SelectedFile) ==0) {
-		strcpy(curText, SelectedFile);
+            if(iter->compare(SelectedFile) ==0)
                 return SelectedFile;
-	    }
         }
     }
 
@@ -160,13 +84,7 @@ char* Game::Print_TextList(int select)
 
 int Game::basicgame()
 {
-    //
-    char name[10];
     /*타자연습 언어 선택*/
-    cout << "Input your name: ";
-    cin >> name;
-    strcpy(userName, name);
-    //
 
     while(1){
         system("clear");
@@ -223,8 +141,9 @@ int Game::basicgame()
          printf("%c[32m",27);
         cout << Buf_E << endl; // txt 파일 문자열 출력
         printf("%c[0m",27);
+        
 
-
+        
         for(int i = 0; put_String_E[i] != '\n'; i++){
 
 
@@ -256,7 +175,7 @@ int Game::basicgame()
 
 
         }
-
+        
 
         fflush(stdout);
 
@@ -264,12 +183,12 @@ int Game::basicgame()
 
         Remove_Enter(put_String_E, strlen(put_String_E));
         err_typenum += Return_ErrTypeNum(Buf_E, put_String_E, strlen(Buf_E));
-        cout<<"오타수:"<<err_typenum<<endl;
+        cout<<endl;
         fflush(stdout);
              }
     }
-
-
+	
+	
     else if(select == SELECT_HANGUL)
     {
         while (1) {
@@ -289,9 +208,9 @@ int Game::basicgame()
         printf("%c[32m",27);
         cout << Buf_H << endl; // txt 파일 문자열 출력
         printf("%c[0m",27);
+	
 
-
-
+	
 	for(int i = 0; put_String_H[i] != '\n'; i++){
 
 
@@ -313,7 +232,7 @@ int Game::basicgame()
 		printf("\b");
 		fputs(" ",stdout);
 		printf("\b");
-		i-=4;
+		i-=4;	
 		continue;
 		}
         }
@@ -324,39 +243,39 @@ int Game::basicgame()
 	put_String_H[i+2] = getch();
 	fflush(stdin);
 	fflush(stdout);
-
-
-
-
+	
+	
+	
+	
          if(put_String_H[i] == Buf_H[i] && put_String_H[i+1] == Buf_H[i+1] && put_String_H[i+2] == Buf_H[i+2]){
                         printf("%c[32m",27);
-                        printf("%c%c%c",put_String_H[i],put_String_H[i+1],put_String_H[i+2]);
+                        printf("%c%c%c",put_String_H[i],put_String_H[i+1],put_String_H[i+2]);    
 			printf("%c[0m",27);
-
+			
 
                 }
                 else{
                         printf("%c[31m",27);
                         printf("%c%c%c",put_String_H[i],put_String_H[i+1],put_String_H[i+2]);
                         printf("%c[0m",27);
-
+                        
    	}
 		i+=2;
 
-
-
-
+	
+	
+ 
 	fflush(stdin);
 	}
 
+        
 
 
-
-
+	
         fgets(put_String_H, 100, stdin);
         Remove_Enter(put_String_H, strlen(put_String_H));
         err_typenum += Return_ErrTypeNum(Buf_H, put_String_H, strlen(Buf_H))/3;  //바이트 수만큼 나눠줘야 오타수 오류x
-        cout<<"오타수:"<<err_typenum<<endl;
+        cout<<endl;
         fflush(stdout);
              }
     }
