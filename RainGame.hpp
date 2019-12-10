@@ -27,7 +27,7 @@ using namespace std;
 #define STAGE2_SCORE 20
 #define STAGE3_SCORE 30
 #define   BOSS_SCORE 50
- 
+
 //Fruit
 static char* STAGE1[] = {"Banana","Mango","Apple","Watermelon","Orange","Strawberry","Durian","Grape","Citrus","Mangosteen","Plum","Peach","Pineapple","Coconnut","Sugarcane","Blueberry","Pear","flg","Persimmon","Pomegranate"};
 //Music
@@ -45,7 +45,7 @@ static char* BOSS[] ={"Infix to Postfix", "1 4+ 5 4 + + 2 /", "pthread_exit()","
 static int SCORE_TYPE=STAGE1_SCORE;
 static int MODE=START_MODE;
 static int score=0;
-static int hp=5;
+static int hp=1;
 static char stageName[10];
 static int BOSS_HP=3;
 static char BOSS_HP_BAR[10];
@@ -65,7 +65,7 @@ typedef struct WordNode
 
 }WordNode;
 
-    
+
 
 
 class Rain
@@ -74,6 +74,7 @@ class Rain
 
 
     public:
+      pthread_t pthread = 0;
       void GameComplete();
       void StageChange();
       void Print_UI();

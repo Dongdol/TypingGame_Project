@@ -4,31 +4,29 @@
 list<WordNodePointer> WordList;
 list<WordNodePointer>::iterator Iter;
 
- 
 void Rain::Game_Start() {
     Rain *arg = new Rain();
-    pthread_t pthread = 0; 
     short COLOR_USR1;
-    //strcpy(stageName,"STAGE1");
-    //srand(time(NULL));
-    //clear();
-    initscr(); // curses모드 시작!! 
-
-  
-    
+    initscr(); // curses모드 시작!!
 
     pthread_create(&pthread, NULL, (THREADFUNCPTR)&Rain::Game_Board, arg);
     start_color();
     init_color(COLOR_USR1,300,300,300);
     attrset(A_BOLD);
-    sleep(5);  
+    sleep(5);
     Print_UI();
 
     while (hp > 0 || BOSS_HP !=0) {
-  
-       
+        if (hp == 0) {
+            GameOver();
+            sleep(5);
+            endwin();
+            pthread_exit(NULL);
+
+        }
         enter_num = 0;
         for (enter_num = 0; enter_num < 30;) {
+
             input = getch();
 
             if (input == '\n') { //개행 입력 받았을 때
@@ -109,7 +107,7 @@ void Rain::Print_UI()
     init_pair(3,COLOR_WHITE,COLOR_BLACK);//엔터 + 스테이지 색상
     init_pair(4,COLOR_WHITE,COLOR_BLACK);//단어 색상
     // score print
-    
+
     move(1, 0);
     addstr("score: ");
 
@@ -129,11 +127,6 @@ void Rain::Print_UI()
     addstr(hp_Bar);
     attroff( COLOR_PAIR(1));
     refresh();
-
-    // Inventory
-   // move(2, 0);
-    //addstr("Inventory: ");
-    //refresh();
 
     // Print Stage
     attron(COLOR_PAIR(3));
@@ -204,7 +197,7 @@ void Rain::FindWords(char *str) {
 void *Rain::Game_Board(void *) {
     int  count = 0;
     while (hp > 0) {
-        if(score==0 && MODE == START_MODE){
+        if(score==0 && MODE == START_MODE){ // 1단계
             SCORE_TYPE = STAGE1_SCORE;
             MODE = STAGE1_MODE;
             memset(stageName, '\0', sizeof(char) * 10);
@@ -258,34 +251,24 @@ void *Rain::Game_Board(void *) {
             pthread_exit(NULL);
         }
 
-
         CreateList();
         Blank_OutputWord();
         //문자열 출력
-            
+
         for (Iter = WordList.begin(); Iter != WordList.end(); ++Iter) {
             // row가 19이하일 때만 출력한다
-            
+
             if ((**Iter).row <21)
             {
                 attron( COLOR_PAIR(4) );
                 Draw((**Iter).row, (**Iter).col, (**Iter).str);
                 attroff(COLOR_PAIR(4));
             }
-            
-            
 
             if ((**Iter).row >22  ) {
-                 
+
                 pthread_mutex_lock(&lock);
-                --hp;
-                if(hp ==0)
-                {
-                    GameOver(); 
-                    sleep(5);
-                    endwin();
-                    pthread_exit(NULL);
-                }
+                hp--;
 
                 WordList.pop_front();
                 pthread_mutex_unlock(&lock);
@@ -300,13 +283,14 @@ void *Rain::Game_Board(void *) {
                 attroff(COLOR_PAIR(1));
                 refresh();
                 Iter = WordList.begin();
-                // WordList를  pop()해줌에 따라 인덱스 값이 변경 됐으므로 다시
-                // 시작
+
             }
         }
 
         move(22, 36);
     }
+
+
 }
 
 void Rain::Draw(int row, int col, char *str) {
@@ -354,7 +338,7 @@ void Rain::CreateList() {
     WordList.push_back(word);
     if(MODE == BOSS_MODE)
     usleep(600000);
-    usleep(2000000);
+    usleep(200000); //2000000
     Down_Words();
 }
 
@@ -392,7 +376,10 @@ void Rain::GameComplete() {
     Draw(11, 8, "    V V     I   C   C   T   O   O  R  R     Y            ");
     Draw(12, 8, "     V     III   CCC    T    OOO   R   R    Y     !! !!  ");
     refresh();
-    return;
+    sleep(5);
+    clear();
+    endwin();
+    exit(-1);
 }
 
 void Rain::GameOver() {
@@ -413,9 +400,12 @@ void Rain::GameOver() {
     Draw(12, 2,
          "    GGG   A       A M       M  EEEEE   OOO      V    EEEEE  R   R "
          ".....");
-
     refresh();
-    return;
+    sleep(5);
+    clear();
+    endwin();
+
+    system("./Prototype.exe"); //프로그램 재시작
 }
 
 void Rain::StageChange()

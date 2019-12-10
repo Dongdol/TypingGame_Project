@@ -6,10 +6,10 @@
 #include <unistd.h>
 
 short Menu::mainmenu()
- { 
+ {
    // list<WordNodePointer> WordList;
    // list<WordNodePointer>::iterator Iter;
-    
+
     Menu menu;
     Game game;
     Rain rain;
@@ -26,16 +26,14 @@ short Menu::mainmenu()
     cout << "\n\n\n\n\n\n\n\n\n\n\n\n[시작하려면 엔터키[ENTER]를 누르세요.]";
     cin.get();
 
-    
-       
-        system("clear"); //콘솔창 초기화
-        cout << "1.타자 연습 게임" << endl << endl;
-        cout << "2.소나기 게임" << endl << endl;
-        cout << "3.기록 보기" << endl << endl;
-        cout << "4.도움말" << endl << endl;
-        cout << "5.종료" << endl << endl;
-        printf("선택>>");
-        
+    system("clear");
+    cout << "1.타자 연습 게임" << endl << endl;
+    cout << "2.소나기 게임" << endl << endl;
+    cout << "3.기록 보기" << endl << endl;
+    cout << "4.도움말" << endl << endl;
+    cout << "5.종료" << endl << endl;
+    printf("선택>>");
+
         cin>>menu.choice;
 
         switch (menu.choice) {
@@ -45,7 +43,7 @@ short Menu::mainmenu()
         case 2:
             while(getchar()!='\n');
             rain.Game_Start(); //산성비 모드
-            break; 
+            break;
         case 3:
             cout << "기록보기함수 \n"; //구현해야함
             break;
@@ -57,7 +55,7 @@ short Menu::mainmenu()
             return OFF; //게임 종료
         default:
             break;
-         
+
     }
     return ON;
 }
@@ -78,7 +76,10 @@ void Menu::help()
          << endl<<endl;
     cout << "1레벨(과일)    100점 충족시 2레벨 진입" << endl<<endl;
     cout << "2레벨(노래 제목)   180점 충족시 3레벨 진입" << endl<<endl;
-    cout << "3레벨(학문)    250점 충족시 게임 클리어" << endl<<endl<<endl<<endl;
+    cout << "3레벨(학문)    250점 충족시 BOSS레벨 진입" << endl<<endl;
+    cout << "BOSS    BOSS HP를 0으로 만들면 게임 클리어" << endl
+         << endl
+         << endl;
 
     cout << "엔터 키를 누르시면 메인 메뉴로 이동합니다.\n";
 
