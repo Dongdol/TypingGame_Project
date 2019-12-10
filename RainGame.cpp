@@ -5,13 +5,6 @@ list<WordNodePointer> WordList;
 list<WordNodePointer>::iterator Iter;
 
 void Rain::Game_Start() {
-    char name[10];
-    RainScore *rainScore=new RainScore;
-
-    cout << "input your name: ";
-    cin >> name;
-
-
     Rain *arg = new Rain();
     short COLOR_USR1;
     initscr(); // curses모드 시작!!
@@ -94,26 +87,7 @@ void Rain::Game_Start() {
             Print_UI();
         }
 
-     	rainScore->score=score;
     }
-
-    // saving func started
-    strcpy(rainScore->userName,name);
-
-    if(score < 100)
-            rainScore->stage=1;
-    else if(rainScore->score>=100 && rainScore->score<120)
-            rainScore->stage=2;
-    else if(rainScore->score>=120 && rainScore->score<150)
-            rainScore->stage=3;
-    else
-            rainScore->stage=4;
-
-    int fd=open(rainScoreFile, O_CREAT | O_WRONLY | O_APPEND, 0644);
-    wSize=write(fd, (RainScore*)rainScore, sizeof(RainScore));
-
-    close(fd);
-    // saving func finished
 
     pthread_join(pthread, NULL);
     Blank_OutputWord();
@@ -123,29 +97,6 @@ void Rain::Game_Start() {
     return;
 }
 //A_BLINK || A_ITALIC || A_BOLD
-
-void readRainScore() {
-        RainScore *rainScore=new RainScore;
-        char a;
-
-        system("clear");
-
-        cout << "Rank\t\t";
-        cout << "Name\t\t";
-        cout << "Stage\t\t";
-        cout << "Score" << endl;
-
-        int fd=open(rainScoreFile, O_CREAT | O_RDONLY, 0644);
-        rSize=read(fd, (RainScore*)rainScore, sizeof(RainScore));
-
-        cout << rainScore->userName;
-        cout << "\t\t";
-        cout << rainScore->stage + "\t\t";
-        cout << rainScore->score << endl;
-        close(fd);
-
-        cin >> a;
-}
 
 void Rain::Print_UI()
 {
@@ -396,13 +347,13 @@ char* Rain::Return_Str() {
     switch(MODE)
     {
         case STAGE1_MODE:
-            return STAGE1[index%20];
+            return STAGE1[index%19];
         case STAGE2_MODE:
             return STAGE2[index];
         case STAGE3_MODE:
             return STAGE3[index];
         case BOSS_MODE:
-            return BOSS[index%13];
+            return BOSS[index%12];
     }
 
 }

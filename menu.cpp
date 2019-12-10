@@ -45,22 +45,7 @@ short Menu::mainmenu()
             rain.Game_Start(); //산성비 모드
             break;
         case 3:
-	    int key;
-            cout << "Select the game you want to see \n"; // taja, rain
-            cout << "1. Tajagame        2. Rain" << endl;
-            cout << "Select: ";
-            cin >> key;
-
-            switch(key) {
-            case 1:
-                readScore();
-                break;
-            case 2:
-                readRainScore();
-                break;
-            case 3:
-                break;
-            }
+            cout << "기록보기함수 \n"; //구현해야함
             break;
         case 4:
             menu.help(); //예시 구현

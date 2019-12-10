@@ -11,9 +11,6 @@
 #include <unistd.h>
 #include <string>
 #include <list>
-#include <termios.h>
-#include <stdio.h>
-
 
 using namespace std;
 
@@ -22,9 +19,6 @@ using namespace std;
 
 #define SELECT_ENGLISH 1
 #define SELECT_HANGUL 2
-
-#define SCOREFILE "./userscore.dat"     // added
-
 class Game {
 
   private:
@@ -45,8 +39,6 @@ class Game {
     list<string> Hangul={"이별택시","자화상"};
     list<string> Text_Mode;
     list<string>::iterator iter;
-    char curText[10];
-    char userName[10];
 
   public:
     int basicgame();
@@ -54,25 +46,7 @@ class Game {
     void Remove_Enter(char put_String[], int len);
     void Print_Result();
     char* Print_TextList(int select);
-    
+     
 };
-
-// added part started
-
-static int fd;
-static int w_Size;
-static int r_Size;
-
-typedef struct UserScore {
-        char name[10];
-        double spd;
-        double accuracy;
-        char text[10];
-} UserScore;
-
-void readScore();
-void move_right_one(UserScore** arr, int ind, int curIndex);
-
-// added part finished
 
 #endif
